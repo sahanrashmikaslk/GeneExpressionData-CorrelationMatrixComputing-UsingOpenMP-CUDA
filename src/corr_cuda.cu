@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <omp.h>
 #include <cuda_runtime.h>
 
-// The kernel is the same as the pure CUDA version.
+// CUDA Kernel to compute the correlation matrix
 __global__ void correlation_kernel(float* input_matrix, float* output_matrix, int N, int M) {
+    // Calculate the global thread ID for the output matrix
     int i = blockIdx.y * blockDim.y + threadIdx.y;
     int j = blockIdx.x * blockDim.x + threadIdx.x;
 
+    // Boundary check to ensure we don't go out of bounds and compute only the upper triangle
     if (i < N && j < N && j >= i) {
         float sum_X = 0.0, sum_Y = 0.0, sum_XY = 0.0;
         float sum_X2 = 0.0, sum_Y2 = 0.0;
@@ -33,6 +34,7 @@ __global__ void correlation_kernel(float* input_matrix, float* output_matrix, in
     }
 }
 
+// Helper to fill the symmetric part of the matrix on the CPU
 void fill_symmetric(float* matrix, int N) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < i; j++) {
@@ -50,52 +52,57 @@ int main(int argc, char** argv) {
     int N = atoi(argv[1]);
     int M = atoi(argv[2]);
 
-    printf("Executing Hybrid OpenMP+CUDA Version\n");
+    printf("Executing CUDA Version\n");
     printf("Matrix Size: N=%d, M=%d\n", N, M);
-    printf("Num threads: %d\n", omp_get_max_threads());
 
-    // Allocate host memory for the full matrices
+    // Host memory allocation
     float* h_input = (float*)malloc(N * M * sizeof(float));
     float* h_output = (float*)malloc(N * N * sizeof(float));
 
-    srand(12345);
-    for (int i = 0; i < N * M; i++) h_input[i] = (float)rand() / RAND_MAX;
-
-    // Here, we demonstrate a simple hybrid approach where the GPU does all the work,
-    // but the concept could be extended to tiling as described in the proposal.
-    // For this implementation, we will keep it simple and equivalent to the pure CUDA
-    // version to show the compilation setup, but use OpenMP timers.
-    
-    // In a true tiled hybrid model, you would create an OpenMP parallel region here
-    // and each thread would manage its own CUDA stream and memory for a subset (tile)
-    // of the problem. That is significantly more complex. The code below uses the
-    // hybrid compilation but functions like the pure CUDA version for simplicity.
-
+    // Device memory allocation
     float *d_input, *d_output;
     cudaMalloc(&d_input, N * M * sizeof(float));
     cudaMalloc(&d_output, N * N * sizeof(float));
 
+    srand(12345);
+    for (int i = 0; i < N * M; i++) h_input[i] = (float)rand() / RAND_MAX;
+
+    // Copy input data from host to device
     cudaMemcpy(d_input, h_input, N * M * sizeof(float), cudaMemcpyHostToDevice);
 
+    // Define CUDA grid and block dimensions
     dim3 threadsPerBlock(16, 16);
-    dim3 numBlocks((N + 15) / 16, (N + 15) / 16);
+    dim3 numBlocks((N + threadsPerBlock.x - 1) / threadsPerBlock.x, (N + threadsPerBlock.y - 1) / threadsPerBlock.y);
 
-    double start_time = omp_get_wtime();
+    // Use CUDA events for accurate timing
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
 
+    cudaEventRecord(start);
+    // Launch the kernel
     correlation_kernel<<<numBlocks, threadsPerBlock>>>(d_input, d_output, N, M);
-    cudaDeviceSynchronize(); // Wait for kernel to finish
+    cudaEventRecord(stop);
 
-    double end_time = omp_get_wtime();
+    cudaEventSynchronize(stop);
+    float milliseconds = 0;
+    cudaEventElapsedTime(&milliseconds, start, stop);
 
+    // Copy result back from device to host
     cudaMemcpy(h_output, d_output, N * N * sizeof(float), cudaMemcpyDeviceToHost);
+
+    // The kernel only computes the upper triangle, so we fill the lower part on the CPU
     fill_symmetric(h_output, N);
 
-    printf("Execution Time: %f seconds\n\n", end_time - start_time);
+    printf("Execution Time: %f seconds\n\n", milliseconds / 1000.0f);
 
+    // Free memory
     free(h_input);
     free(h_output);
     cudaFree(d_input);
     cudaFree(d_output);
+    cudaEventDestroy(start);
+    cudaEventDestroy(stop);
 
     return 0;
 }

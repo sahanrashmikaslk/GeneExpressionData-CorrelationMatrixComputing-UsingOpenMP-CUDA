@@ -32,5 +32,9 @@ openmp: src/corr_openmp.c
 cuda: src/corr_cuda.cu
 	$(NVCC) $(CFLAGS) $(CUDA_HOST_FLAGS) -o $@ $< $(LIBS)
 
+# # The hybrid target also needs these flags
+# hybrid: src/corr_hybrid.cu
+# 	$(NVCC) $(CFLAGS) $(CUDA_HOST_FLAGS) -o $@ $< $(LIBS)
+
 clean:
 	rm -f $(TARGETS)
