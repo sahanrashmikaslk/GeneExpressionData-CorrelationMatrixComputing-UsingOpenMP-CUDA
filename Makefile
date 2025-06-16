@@ -1,12 +1,16 @@
-# Compiler definitions
+# Compiler 
+
+#definitions
 CC = gcc
 NVCC = nvcc
 
-# Compiler flags
+# flags
 CFLAGS = -O3
 OMPFLAGS = -fopenmp
+
 # Pass the -fopenmp flag to the host compiler used by nvcc
 CUDA_HOST_FLAGS = -Xcompiler "-fopenmp"
+
 # Link the math and OpenMP libraries
 LIBS = -lm -lgomp
 
@@ -14,21 +18,19 @@ LIBS = -lm -lgomp
 .SUFFIXES: .c .cu
 
 # Target executables
-TARGETS = serial openmp cuda hybrid
+TARGETS = serial openmp cuda
 
 all: $(TARGETS)
 
-# Use user's file names
+
 serial: src/corr_serial.c
 	$(CC) $(CFLAGS) -o $@ $< -lm
 
-# Use user's file names
+
 openmp: src/corr_openmp.c
 	$(CC) $(CFLAGS) $(OMPFLAGS) -o $@ $< -lm
 
-# The cuda target now needs OpenMP flags because it uses omp functions
-# We add CUDA_HOST_FLAGS and LIBS
-# Use user's file names
+
 cuda: src/corr_cuda.cu
 	$(NVCC) $(CFLAGS) $(CUDA_HOST_FLAGS) -o $@ $< $(LIBS)
 
