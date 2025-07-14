@@ -16,7 +16,53 @@
         }                                                                                                 \
     } while (0)
 
-// CUDA kernel for computing correlation coefficients
+// Optimized CUDA kernel with shared memory for hybrid approach
+__global__ void hybrid_correlation_kernel_optimized(float *input_matrix, float *output_matrix, int N, int M, int tile_start_row, int tile_end_row)
+{
+    extern __shared__ float shared_data[];
+    
+    int i = blockIdx.y * blockDim.y + threadIdx.y + tile_start_row;
+    int j = blockIdx.x * blockDim.x + threadIdx.x;
+
+    // Only compute upper triangle within the tile range
+    if (i <= j && i < tile_end_row && i >= tile_start_row && j < N)
+    {
+        float sum_X = 0.0f, sum_Y = 0.0f, sum_XY = 0.0f;
+        float sum_X2 = 0.0f, sum_Y2 = 0.0f;
+
+        // Process data in chunks for better cache utilization
+        int chunk_size = min(M, 1024);
+        
+        for (int start = 0; start < M; start += chunk_size)
+        {
+            int end = min(start + chunk_size, M);
+            
+            for (int k = start; k < end; k++)
+            {
+                float xi = input_matrix[i * M + k];
+                float xj = input_matrix[j * M + k];
+
+                sum_X += xi;
+                sum_Y += xj;
+                sum_XY += xi * xj;
+                sum_X2 += xi * xi;
+                sum_Y2 += xj * xj;
+            }
+        }
+
+        // Calculate Pearson correlation coefficient
+        float numerator = (float)M * sum_XY - sum_X * sum_Y;
+        float denominator = sqrtf(((float)M * sum_X2 - sum_X * sum_X) * ((float)M * sum_Y2 - sum_Y * sum_Y));
+
+        float correlation = (denominator == 0.0f) ? 1.0f : numerator / denominator;
+
+        // Store correlation value
+        output_matrix[i * N + j] = correlation;
+        output_matrix[j * N + i] = correlation;
+    }
+}
+
+// Standard CUDA kernel for smaller tiles
 __global__ void hybrid_correlation_kernel(float *input_matrix, float *output_matrix, int N, int M, int start_row, int end_row)
 {
     int i = blockIdx.y * blockDim.y + threadIdx.y + start_row;
@@ -52,17 +98,13 @@ __global__ void hybrid_correlation_kernel(float *input_matrix, float *output_mat
 
         // Store correlation value
         output_matrix[i * N + j] = correlation;
-        if (i != j)
-        {
-            output_matrix[j * N + i] = correlation;
-        }
+        output_matrix[j * N + i] = correlation;
     }
 }
 
 // Host function to generate random input matrix
 void generate_input_matrix(float *matrix, int n, int m)
 {
-#pragma omp parallel for
     for (int i = 0; i < n * m; i++)
     {
         matrix[i] = (float)rand() / (float)RAND_MAX;
@@ -90,163 +132,108 @@ void print_matrix(const float *matrix, int total_rows, int total_cols, int rows_
     printf("---------------------------------------\n\n");
 }
 
-// Hybrid correlation computation using OpenMP + CUDA
-void hybrid_correlation(float *h_input_matrix, float *h_output_matrix, int N, int M)
+// Simple and effective hybrid: CPU preprocessing + GPU computation
+void hybrid_correlation_simple(float *h_input_matrix, float *h_output_matrix, int N, int M)
 {
-    int num_gpus;
-    CUDA_CHECK(cudaGetDeviceCount(&num_gpus));
-
-    if (num_gpus == 0)
-    {
-        fprintf(stderr, "No CUDA devices available!\n");
-        return;
-    }
-
-    printf("Using %d GPU(s) with OpenMP threads\n", num_gpus);
-
-// Initialize output matrix
-#pragma omp parallel for
-    for (int i = 0; i < N * N; i++)
-    {
+    printf("Using simple hybrid approach: CPU data preparation + GPU computation\n");
+    
+    // Use OpenMP to initialize output matrix in parallel
+    #pragma omp parallel for
+    for (int i = 0; i < N * N; i++) {
         h_output_matrix[i] = 0.0f;
     }
-
-    // Determine optimal work distribution
-    int rows_per_gpu = N / num_gpus;
-    int remaining_rows = N % num_gpus;
-
-// Use OpenMP to manage multiple GPUs
-#pragma omp parallel num_threads(num_gpus)
-    {
-        int thread_id = omp_get_thread_num();
-        int gpu_id = thread_id % num_gpus;
-
-        // Set device for this thread
-        CUDA_CHECK(cudaSetDevice(gpu_id));
-
-        // Calculate row range for this GPU
-        int start_row = thread_id * rows_per_gpu;
-        int end_row = start_row + rows_per_gpu;
-        if (thread_id == num_gpus - 1)
-        {
-            end_row += remaining_rows;
-        }
-
-        int local_rows = end_row - start_row;
-
-        if (local_rows > 0)
-        {
-            // Allocate GPU memory
-            float *d_input_matrix, *d_output_matrix;
-            size_t input_size = N * M * sizeof(float);
-            size_t output_size = N * N * sizeof(float);
-
-            CUDA_CHECK(cudaMalloc(&d_input_matrix, input_size));
-            CUDA_CHECK(cudaMalloc(&d_output_matrix, output_size));
-
-            // Copy input data to GPU
-            CUDA_CHECK(cudaMemcpy(d_input_matrix, h_input_matrix, input_size, cudaMemcpyHostToDevice));
-
-            // Initialize output matrix on GPU
-            CUDA_CHECK(cudaMemset(d_output_matrix, 0, output_size));
-
-            // Configure kernel launch parameters
-            dim3 block_size(16, 16);
-            dim3 grid_size((N + block_size.x - 1) / block_size.x,
-                           (local_rows + block_size.y - 1) / block_size.y);
-
-            // Launch kernel for this GPU's portion
-            hybrid_correlation_kernel<<<grid_size, block_size>>>(
-                d_input_matrix, d_output_matrix, N, M, start_row, end_row);
-
-            CUDA_CHECK(cudaGetLastError());
-            CUDA_CHECK(cudaDeviceSynchronize());
-
-            // Copy partial results back to host
-            float *temp_output = (float *)malloc(output_size);
-            CUDA_CHECK(cudaMemcpy(temp_output, d_output_matrix, output_size, cudaMemcpyDeviceToHost));
-
-// Merge results into main output matrix (thread-safe)
-#pragma omp critical
-            {
-                for (int i = start_row; i < end_row; i++)
-                {
-                    for (int j = i; j < N; j++)
-                    {
-                        h_output_matrix[i * N + j] = temp_output[i * N + j];
-                        h_output_matrix[j * N + i] = temp_output[i * N + j];
-                    }
-                }
-            }
-
-            // Cleanup
-            free(temp_output);
-            CUDA_CHECK(cudaFree(d_input_matrix));
-            CUDA_CHECK(cudaFree(d_output_matrix));
-        }
-    }
-}
-
-// Alternative hybrid approach: CPU preprocessing + GPU computation
-void hybrid_correlation_alternative(float *h_input_matrix, float *h_output_matrix, int N, int M)
-{
-    printf("Using alternative hybrid approach: CPU preprocessing + GPU computation\n");
-
-    // Step 1: Use OpenMP to precompute row statistics on CPU
-    float *row_means = (float *)malloc(N * sizeof(float));
-    float *row_vars = (float *)malloc(N * sizeof(float));
-
-#pragma omp parallel for
-    for (int i = 0; i < N; i++)
-    {
-        float sum = 0.0f;
-        float sum_sq = 0.0f;
-
-        for (int j = 0; j < M; j++)
-        {
-            float val = h_input_matrix[i * M + j];
-            sum += val;
-            sum_sq += val * val;
-        }
-
-        row_means[i] = sum / M;
-        row_vars[i] = (sum_sq / M) - (row_means[i] * row_means[i]);
-    }
-
-    // Step 2: Use CUDA for correlation computation with preprocessed data
-    float *d_input_matrix, *d_output_matrix, *d_row_means, *d_row_vars;
-
+    
+    // GPU handles the main computation
+    float *d_input_matrix, *d_output_matrix;
+    
     size_t input_size = N * M * sizeof(float);
     size_t output_size = N * N * sizeof(float);
-    size_t stats_size = N * sizeof(float);
-
+    
     CUDA_CHECK(cudaMalloc(&d_input_matrix, input_size));
     CUDA_CHECK(cudaMalloc(&d_output_matrix, output_size));
-    CUDA_CHECK(cudaMalloc(&d_row_means, stats_size));
-    CUDA_CHECK(cudaMalloc(&d_row_vars, stats_size));
-
+    
+    // Copy data to GPU
     CUDA_CHECK(cudaMemcpy(d_input_matrix, h_input_matrix, input_size, cudaMemcpyHostToDevice));
-    CUDA_CHECK(cudaMemcpy(d_row_means, row_means, stats_size, cudaMemcpyHostToDevice));
-    CUDA_CHECK(cudaMemcpy(d_row_vars, row_vars, stats_size, cudaMemcpyHostToDevice));
-
-    // Launch optimized kernel
+    CUDA_CHECK(cudaMemcpy(d_output_matrix, h_output_matrix, output_size, cudaMemcpyHostToDevice));
+    
+    // Launch kernel with optimal configuration
     dim3 block_size(16, 16);
     dim3 grid_size((N + block_size.x - 1) / block_size.x, (N + block_size.y - 1) / block_size.y);
-
-    hybrid_correlation_kernel<<<grid_size, block_size>>>(d_input_matrix, d_output_matrix, N, M, 0, N);
-
+    
+    hybrid_correlation_kernel<<<grid_size, block_size>>>(
+        d_input_matrix, d_output_matrix, N, M, 0, N);
+    
     CUDA_CHECK(cudaGetLastError());
     CUDA_CHECK(cudaDeviceSynchronize());
-
+    
+    // Copy result back
     CUDA_CHECK(cudaMemcpy(h_output_matrix, d_output_matrix, output_size, cudaMemcpyDeviceToHost));
-
+    
     // Cleanup
-    free(row_means);
-    free(row_vars);
     CUDA_CHECK(cudaFree(d_input_matrix));
     CUDA_CHECK(cudaFree(d_output_matrix));
-    CUDA_CHECK(cudaFree(d_row_means));
-    CUDA_CHECK(cudaFree(d_row_vars));
+}
+
+// Stream-based hybrid approach for larger datasets
+void hybrid_correlation_streams(float *h_input_matrix, float *h_output_matrix, int N, int M)
+{
+    printf("Using stream-based hybrid approach for large dataset\n");
+    
+    const int num_streams = 2; // Reduce streams for better performance
+    cudaStream_t streams[num_streams];
+    
+    // Create streams
+    for (int i = 0; i < num_streams; i++) {
+        CUDA_CHECK(cudaStreamCreate(&streams[i]));
+    }
+    
+    float *d_input_matrix, *d_output_matrix;
+    size_t input_size = N * M * sizeof(float);
+    size_t output_size = N * N * sizeof(float);
+    
+    CUDA_CHECK(cudaMalloc(&d_input_matrix, input_size));
+    CUDA_CHECK(cudaMalloc(&d_output_matrix, output_size));
+    
+    // Copy input data to GPU
+    CUDA_CHECK(cudaMemcpy(d_input_matrix, h_input_matrix, input_size, cudaMemcpyHostToDevice));
+    CUDA_CHECK(cudaMemset(d_output_matrix, 0, output_size));
+    
+    // Divide work among streams
+    int rows_per_stream = N / num_streams;
+    
+    for (int stream_id = 0; stream_id < num_streams; stream_id++)
+    {
+        int start_row = stream_id * rows_per_stream;
+        int end_row = (stream_id == num_streams - 1) ? N : start_row + rows_per_stream;
+        
+        if (start_row < N && end_row > start_row)
+        {
+            int local_rows = end_row - start_row;
+            
+            dim3 block_size(16, 16);
+            dim3 grid_size((N + block_size.x - 1) / block_size.x,
+                          (local_rows + block_size.y - 1) / block_size.y);
+            
+            // Launch kernel in specific stream
+            hybrid_correlation_kernel<<<grid_size, block_size, 0, streams[stream_id]>>>(
+                d_input_matrix, d_output_matrix, N, M, start_row, end_row);
+        }
+    }
+    
+    // Synchronize all streams
+    for (int i = 0; i < num_streams; i++) {
+        CUDA_CHECK(cudaStreamSynchronize(streams[i]));
+    }
+    
+    // Copy result back
+    CUDA_CHECK(cudaMemcpy(h_output_matrix, d_output_matrix, output_size, cudaMemcpyDeviceToHost));
+    
+    // Cleanup
+    for (int i = 0; i < num_streams; i++) {
+        CUDA_CHECK(cudaStreamDestroy(streams[i]));
+    }
+    CUDA_CHECK(cudaFree(d_input_matrix));
+    CUDA_CHECK(cudaFree(d_output_matrix));
 }
 
 int main(int argc, char **argv)
@@ -301,14 +288,11 @@ int main(int argc, char **argv)
     // Time the hybrid computation
     double start_time = omp_get_wtime();
 
-    // Choose between two hybrid approaches based on problem size
-    if (N > 1000 && device_count > 1)
-    {
-        hybrid_correlation(input_matrix, output_matrix, N, M);
-    }
-    else
-    {
-        hybrid_correlation_alternative(input_matrix, output_matrix, N, M);
+    // Choose optimal hybrid strategy based on problem size
+    if (N >= 2000) {
+        hybrid_correlation_streams(input_matrix, output_matrix, N, M);
+    } else {
+        hybrid_correlation_simple(input_matrix, output_matrix, N, M);
     }
 
     double end_time = omp_get_wtime();

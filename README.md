@@ -12,34 +12,44 @@ This project implements a high-performance hybrid parallel algorithm for computi
 - [Prerequisites](#prerequisites)
 - [WSL Environment Setup](#wsl-environment-setup)
 - [Project Structure](#project-structure)
-- [Implementation Roadmap](#implementation-roadmap)
+- [Implementation Details](#implementation-details)
 - [Building and Running](#building-and-running)
-- [Performance Testing](#performance-testing)
-- [Results](#results)
+- [Benchmarking and Performance Analysis](#benchmarking-and-performance-analysis)
+- [Performance Results](#performance-results)
+- [Troubleshooting](#troubleshooting)
+- [Project Deliverables](#project-deliverables)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
 ## Prerequisites
 
 ### Hardware Requirements
+
 - NVIDIA GPU with CUDA support (Compute Capability 3.0+)
 - Multi-core CPU
 - Minimum 8GB RAM (16GB+ recommended for large datasets)
 
 ### Software Requirements
+
 - Windows 10/11 with WSL2
 - Ubuntu 20.04+ in WSL
 - NVIDIA GPU drivers for Windows
 - CUDA Toolkit 11.0+
 - GCC compiler with OpenMP support
+- Python 3.8+ with data analysis libraries (for benchmarking)
 
 ## WSL Environment Setup
 
 ### 1. Install WSL2 and Ubuntu
+
 ```bash
 # In Windows PowerShell (as Administrator)
 wsl --install -d Ubuntu-20.04
 ```
 
 ### 2. Install CUDA in WSL
+
 ```bash
 # Update system
 sudo apt update && sudo apt upgrade -y
@@ -60,6 +70,7 @@ source ~/.bashrc
 ```
 
 ### 3. Verify Installation
+
 ```bash
 # Check CUDA installation
 nvcc --version
@@ -72,81 +83,83 @@ gcc -fopenmp --version
 ## Project Structure
 
 ```
-pearson-correlation-hpc/
+GeneExpressionData-CorrelationMatrixComputing-UsingOpenMP-CUDA/
 ├── src/
-│   ├── serial.c                 # Sequential implementation
-│   ├── openmp.c                 # OpenMP parallel implementation
-│   ├── cuda.cu                  # CUDA implementation
-│   ├── hybrid.cu                # Hybrid OpenMP + CUDA implementation
-│   └── utils.h                  # Common utilities and data structures
-├── data/
-│   ├── generate_data.c          # Test data generator
-│   └── sample_datasets/         # Sample test datasets
+│   ├── corr_serial.c            # Sequential baseline implementation
+│   ├── corr_openmp.c            # OpenMP parallel implementation
+│   ├── corr_cuda.cu             # CUDA GPU implementation
+│   └── corr_hybrid.cu           # Hybrid OpenMP + CUDA implementation
 ├── benchmarks/
-│   ├── benchmark.sh             # Automated benchmarking script
-│   └── results/                 # Performance results
+│   ├── benchmark.sh             # Comprehensive automated benchmarking
+│   ├── quick_benchmark.sh       # Quick validation benchmark
+│   ├── plot_results.py          # Performance analysis and plotting
+│   ├── requirements.txt         # Python dependencies
+│   └── results/                 # Performance results and plots
 ├── Makefile                     # Build configuration
 └── README.md                    # This file
 ```
 
-## Implementation Roadmap
+## Implementation Details
 
-### Phase 1: Sequential Implementation (Baseline)
-**File:** `src/serial.c`
+### Pearson Correlation Formula
 
-**Objectives:**
-- Implement basic Pearson correlation matrix computation
-- Establish performance baseline
-- Validate correctness of correlation calculations
+The Pearson correlation coefficient between two variables X and Y is computed as:
 
-**Key Components:**
-```c
-// Pearson correlation coefficient formula
-double pearson_correlation(double *x, double *y, int n);
-
-// Sequential matrix computation
-void compute_correlation_matrix_serial(double **data, int n_vars, int n_samples, double **result);
+```
+r(X,Y) = (n∑XY - ∑X∑Y) / √[(n∑X² - (∑X)²)(n∑Y² - (∑Y)²)]
 ```
 
-### Phase 2: OpenMP Implementation
-**File:** `src/openmp.c`
+Where:
 
-**Objectives:**
-- Parallelize correlation computation across CPU cores
-- Implement efficient work distribution
-- Optimize memory access patterns
+- n = number of samples
+- ∑XY = sum of products of paired samples
+- ∑X, ∑Y = sum of individual variable samples
+- ∑X², ∑Y² = sum of squared samples
 
-**Key Features:**
-- Parallel for loops with optimal scheduling
-- Thread-safe correlation computation
-- Memory optimization for cache efficiency
+### Implementation Approaches
 
-### Phase 3: CUDA Implementation
-**File:** `src/cuda.cu`
+#### 1. Serial Implementation (`corr_serial.c`)
 
-**Objectives:**
-- Leverage GPU massive parallelism
-- Implement efficient CUDA kernels
-- Optimize memory transfers and shared memory usage
+- **Purpose:** Baseline performance measurement
+- **Algorithm:** Nested loops computing correlation for each pair (i,j)
+- **Complexity:** O(N²M) where N = variables, M = samples
+- **Features:**
+  - Simple and straightforward implementation
+  - Computes only upper triangle (symmetric matrix)
+  - High precision timing using `clock_gettime()`
 
-**Key Components:**
-```cuda
-// CUDA kernel for correlation computation
-__global__ void compute_correlations_kernel(float *data, float *result, int n_vars, int n_samples);
+#### 2. OpenMP Implementation (`corr_openmp.c`)
 
-// Shared memory optimization
-__shared__ float shared_data[TILE_SIZE][TILE_SIZE];
-```
+- **Purpose:** CPU parallelization using multiple threads
+- **Algorithm:** Parallelized outer loop with dynamic scheduling
+- **Features:**
+  - `#pragma omp parallel for schedule(dynamic)`
+  - Load balancing across CPU cores
+  - Thread-safe correlation computation
+  - Automatic scaling with available CPU cores
 
-### Phase 4: Hybrid OpenMP + CUDA Implementation
-**File:** `src/hybrid.cu`
+#### 3. CUDA Implementation (`corr_cuda.cu`)
 
-**Objectives:**
-- Combine CPU and GPU parallelism
-- Implement efficient work distribution between CPU and GPU
-- Optimize data transfers and synchronization
+- **Purpose:** GPU massive parallelism
+- **Algorithm:** 2D grid of CUDA threads, each computing one correlation
+- **Features:**
+  - Optimized memory access patterns
+  - Shared memory utilization for better performance
+  - Coalesced global memory access
+  - Multiple kernel variants (basic and optimized)
+
+#### 4. Hybrid Implementation (`corr_hybrid.cu`)
+
+- **Purpose:** Combine CPU preprocessing with GPU computation
+- **Algorithm:** CPU manages data preparation, GPU handles correlations
+- **Features:**
+  - OpenMP for parallel data initialization
+  - CUDA streams for asynchronous execution
+  - Optimized data transfer patterns
+  - Adaptive workload distribution
 
 **Strategy:**
+
 - CPU handles data partitioning and coordination
 - GPU processes large correlation tiles
 - Asynchronous execution and memory transfers
@@ -154,6 +167,7 @@ __shared__ float shared_data[TILE_SIZE][TILE_SIZE];
 ## Building and Running
 
 ### 1. Clone and Setup
+
 ```bash
 git clone <your-repo-url>
 cd pearson-correlation-hpc
@@ -161,6 +175,7 @@ mkdir -p data/sample_datasets benchmarks/results
 ```
 
 ### 2. Generate Test Data
+
 ```bash
 # Compile data generator
 gcc -o data/generate_data data/generate_data.c -lm
@@ -172,6 +187,7 @@ gcc -o data/generate_data data/generate_data.c -lm
 ```
 
 ### 3. Build All Implementations
+
 ```bash
 # Build all versions
 make all
@@ -184,6 +200,7 @@ make hybrid    # Hybrid version
 ```
 
 ### 4. Run Implementations Progressively
+
 ```bash
 # 1. Run serial implementation (baseline)
 echo "Running Serial Implementation..."
@@ -197,107 +214,217 @@ time ./bin/openmp data/sample_datasets/small.csv
 # 3. Run CUDA implementation
 echo "Running CUDA Implementation..."
 time ./bin/cuda data/sample_datasets/small.csv
-  
+
 # 4. Run Hybrid implementation
 echo "Running Hybrid Implementation..."
-export OMP_NUM_THREADS=4
 time ./bin/hybrid data/sample_datasets/small.csv
 ```
 
-## Performance Testing
+## Performance Results
 
-### Automated Benchmarking
-```bash
-# Run comprehensive benchmarks
-chmod +x benchmarks/benchmark.sh
-./benchmarks/benchmark.sh
+### Current Benchmark Results (N=1000, M=2000)
 
-# This will test all implementations with different:
-# - Dataset sizes (100x1000, 500x5000, 1000x10000, 2000x20000)
-# - Thread counts (1, 2, 4, 8, 16)
-# - GPU configurations
-```
+Based on your recent test results:
 
-### Manual Performance Testing
-```bash
-# Test scalability with different thread counts
-for threads in 1 2 4 8 16; do
-    export OMP_NUM_THREADS=$threads
-    echo "Testing with $threads threads"
-    time ./bin/openmp data/sample_datasets/medium.csv
-done
+| Implementation     | Execution Time | Speedup | Performance Analysis       |
+| ------------------ | -------------- | ------- | -------------------------- |
+| Serial             | 1.321s         | 1.00x   | Baseline performance       |
+| OpenMP (8 threads) | 0.611s         | 2.16x   | Good CPU parallelization   |
+| CUDA (MX230)       | 0.218s         | 6.06x   | Excellent GPU acceleration |
+| Hybrid             | 0.745s         | 1.77x   | **Needs optimization**     |
 
-# Test different dataset sizes
-for dataset in small medium large; do
-    echo "Testing dataset: $dataset"
-    time ./bin/hybrid data/sample_datasets/$dataset.csv
-done
-```
+### Key Observations
 
-## Expected Performance Improvements
+#### ✅ Successes
 
-| Implementation | Expected Speedup | Best Use Case |
-|---------------|------------------|---------------|
-| Serial | 1.0x (baseline) | Small datasets, validation |
-| OpenMP | 2-8x | Medium datasets, CPU-bound |
-| CUDA | 10-100x | Large datasets, GPU-optimized |
-| Hybrid | 15-150x | Very large datasets, optimal resource usage |
+- **CUDA Implementation:** Achieves 6x speedup, demonstrating effective GPU utilization
+- **OpenMP Implementation:** Good 2.16x speedup on 8-core CPU
+- **Serial Baseline:** Stable and reliable baseline implementation
 
-## Key Performance Metrics
+#### ⚠️ Areas for Improvement
 
-1. **Execution Time**: Total computation time
-2. **Speedup**: Performance gain over serial implementation
-3. **Efficiency**: Speedup per processing unit
-4. **Scalability**: Performance with increasing dataset size
-5. **Memory Usage**: Peak memory consumption
+- **Hybrid Implementation:** Currently underperforming at 1.77x speedup
+  - Should theoretically outperform individual implementations
+  - Likely issues: overhead from CPU-GPU coordination, suboptimal work distribution
+  - Recent optimization attempts focused on reducing this overhead
+
+#### 🎯 Performance Goals
+
+- **Target Hybrid Speedup:** 8-12x (combining strengths of CPU and GPU)
+- **Optimization Focus:** Reduce data transfer overhead, improve work distribution
+- **Scalability Target:** Better performance on larger problem sizes (N>2000)
+
+### Hardware Configuration
+
+- **CPU:** 8 cores with OpenMP support
+- **GPU:** NVIDIA GeForce MX230 (Pascal architecture, Compute Capability 6.1)
+- **Memory:** 4GB GPU memory, sufficient system RAM
+- **CUDA Version:** Compatible with sm_61 architecture
+
+### Next Steps for Optimization
+
+1. **Profile GPU utilization** during hybrid execution
+2. **Optimize data transfer patterns** between CPU and GPU
+3. **Implement better work partitioning** strategies
+4. **Test with larger datasets** to find optimal problem sizes
+5. **Consider asynchronous execution** patterns for better overlap
 
 ## Troubleshooting
 
-### Common Issues
+### Common Build Issues
 
-**CUDA Not Found:**
+#### CUDA Architecture Mismatch
+
 ```bash
-# Check CUDA installation
-which nvcc
-echo $PATH | grep cuda
+# Error: No kernel image is available for execution on the device
+# Solution: Check your GPU compute capability
+nvidia-smi
+
+# Update Makefile ARCH_FLAG for your specific GPU
+# For MX230 (Pascal): -arch=sm_61
+# For RTX series: -arch=sm_75 or higher
 ```
 
-**OpenMP Not Working:**
+#### OpenMP Not Found
+
 ```bash
-# Verify OpenMP support
-echo | cpp -fopenmp -dM | grep -i openmp
+# Error: fatal error: omp.h: No such file or directory
+# Solution: Install OpenMP development libraries
+sudo apt install libomp-dev
+
+# Verify installation
+echo '#include <omp.h>' | gcc -fopenmp -x c -
 ```
 
-**Memory Issues:**
+#### CUDA Toolkit Issues
+
 ```bash
-# Monitor memory usage
-watch -n 1 'free -h && nvidia-smi'
+# Error: nvcc: command not found
+# Solution: Add CUDA to PATH
+echo 'export PATH=/usr/local/cuda/bin:$PATH' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+source ~/.bashrc
+
+# Verify CUDA installation
+nvcc --version
+nvidia-smi
 ```
 
-## Results Analysis
+### Performance Troubleshooting
 
-After running all implementations, analyze:
+#### Poor GPU Performance
 
-1. **Performance Scaling**: How each implementation performs with increasing data size
-2. **Resource Utilization**: CPU vs GPU efficiency
-3. **Memory Patterns**: Memory bandwidth and access patterns
-4. **Hybrid Benefits**: Advantages of combining OpenMP and CUDA
+1. **Check GPU Memory:**
 
-## Future Enhancements
+   ```bash
+   nvidia-smi  # Monitor GPU memory during execution
+   ```
 
-- [ ] Multi-GPU support
-- [ ] Distributed computing with MPI
-- [ ] Mixed precision computation
-- [ ] Adaptive work distribution
-- [ ] Memory-mapped file I/O for large datasets
+2. **Verify CUDA Architecture:**
 
-## References
+   ```bash
+   # Ensure Makefile uses correct architecture flag
+   grep ARCH_FLAG Makefile
+   ```
 
-- CUDA Programming Guide
-- OpenMP Specification
-- Pearson Correlation Coefficient Mathematics
-- High-Performance Computing Best Practices
+3. **Monitor GPU Utilization:**
+   ```bash
+   # Run in another terminal during benchmark
+   watch -n 1 nvidia-smi
+   ```
+
+#### OpenMP Performance Issues
+
+1. **Check Thread Affinity:**
+
+   ```bash
+   export OMP_PROC_BIND=true
+   export OMP_PLACES=cores
+   ```
+
+2. **Verify Thread Count:**
+   ```bash
+   export OMP_NUM_THREADS=$(nproc)
+   echo $OMP_NUM_THREADS
+   ```
+
+#### Hybrid Implementation Optimization
+
+1. **Profile Execution:**
+
+   ```bash
+   # Use nvprof for CUDA profiling
+   nvprof ./hybrid 1000 2000
+   ```
+
+2. **Memory Transfer Analysis:**
+   ```bash
+   # Monitor data transfer times
+   nvprof --print-gpu-trace ./hybrid 1000 2000
+   ```
+
+### System Requirements Verification
+
+```bash
+# Check system specifications
+echo "=== System Information ==="
+echo "CPU Cores: $(nproc)"
+echo "Memory: $(free -h | grep '^Mem:' | awk '{print $2}')"
+echo "GPU: $(nvidia-smi --query-gpu=gpu_name --format=csv,noheader)"
+echo "CUDA Version: $(nvcc --version | grep 'release' | awk '{print $6}')"
+echo "OpenMP Max Threads: $(echo '#include <omp.h>
+#include <stdio.h>
+int main() { printf("%d\n", omp_get_max_threads()); return 0; }' | gcc -fopenmp -x c - -o /tmp/omp_test && /tmp/omp_test && rm -f /tmp/omp_test)"
+```
+
+## Project Deliverables
+
+### Code Components
+
+- ✅ Serial baseline implementation (`corr_serial.c`)
+- ✅ OpenMP parallel implementation (`corr_openmp.c`)
+- ✅ CUDA GPU implementation (`corr_cuda.cu`)
+- ✅ Hybrid OpenMP+CUDA implementation (`corr_hybrid.cu`)
+- ✅ Comprehensive build system (`Makefile`)
+
+### Benchmarking System
+
+- ✅ Automated benchmark suite (`benchmark.sh`)
+- ✅ Quick validation testing (`quick_benchmark.sh`)
+- ✅ Performance analysis and plotting (`plot_results.py`)
+- ✅ Statistical analysis and reporting
+
+### Documentation
+
+- ✅ Comprehensive README with setup instructions
+- ✅ Performance analysis and optimization guides
+- ✅ Troubleshooting documentation
+- ✅ Project structure and implementation details
+
+### Expected Academic Outcomes
+
+- **Performance Analysis:** Quantitative speedup measurements across implementations
+- **Scalability Study:** Performance behavior with varying problem sizes
+- **Architecture Comparison:** CPU vs GPU vs Hybrid performance characteristics
+- **Optimization Research:** Investigation of hybrid parallelization strategies
+
+## Contributing
+
+This project is part of an academic assignment for EC7207 High Performance Computing. The implementation demonstrates:
+
+1. **Parallel Algorithm Design:** Multiple approaches to the same computational problem
+2. **Performance Engineering:** Optimization techniques for CPU and GPU architectures
+3. **Hybrid Computing:** Combining multiple parallel paradigms effectively
+4. **Empirical Analysis:** Comprehensive benchmarking and performance evaluation
 
 ## License
 
-This project is for educational purposes as part of the EC7207 High Performance Computing course.
+This project is developed for academic purposes as part of the EC7207 High Performance Computing course.
+
+## Contact
+
+**Student:** Lelwala L.G.S.R  
+**Registration:** EG/2020/4047  
+**Course:** EC7207 - High Performance Computing
+
+For questions or issues related to this implementation, please refer to the troubleshooting section or consult the course materials.
