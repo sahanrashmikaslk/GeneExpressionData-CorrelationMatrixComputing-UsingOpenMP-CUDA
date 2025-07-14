@@ -1,37 +1,42 @@
-# Compiler definitions
+# Compiler 
+
+#definitions
 CC = gcc
 NVCC = nvcc
 
-# GPU Architecture to target. Your MX230 is a Pascal GPU, which is sm_61.
-# THIS IS THE KEY FIX for your specific hardware.
-ARCH_FLAG = -arch=sm_61
-
-# Compiler flags
+# flags
 CFLAGS = -O3
 OMPFLAGS = -fopenmp
+
 # Pass the -fopenmp flag to the host compiler used by nvcc
 CUDA_HOST_FLAGS = -Xcompiler "-fopenmp"
+
 # Link the math and OpenMP libraries
 LIBS = -lm -lgomp
+
+# Suffix rule for .cu files
+.SUFFIXES: .c .cu
 
 # Target executables
 TARGETS = serial openmp cuda hybrid
 
 all: $(TARGETS)
 
+
 serial: src/corr_serial.c
 	$(CC) $(CFLAGS) -o $@ $< -lm
+
 
 openmp: src/corr_openmp.c
 	$(CC) $(CFLAGS) $(OMPFLAGS) -o $@ $< -lm
 
-# The cuda target needs the correct ARCH_FLAG for your GPU
-cuda: src/corr_cuda.cu
-	$(NVCC) $(CFLAGS) $(ARCH_FLAG) $(CUDA_HOST_FLAGS) -o $@ $< $(LIBS)
 
-# The hybrid target also needs the correct ARCH_FLAG
+cuda: src/corr_cuda.cu
+	$(NVCC) $(CFLAGS) $(CUDA_HOST_FLAGS) -o $@ $< $(LIBS)
+
 hybrid: src/corr_hybrid.cu
-	$(NVCC) $(CFLAGS) $(ARCH_FLAG) $(CUDA_HOST_FLAGS) -o $@ $< $(LIBS)
+	$(NVCC) $(CFLAGS) $(CUDA_HOST_FLAGS) -o $@ $< $(LIBS)
+
 
 clean:
 	rm -f $(TARGETS)

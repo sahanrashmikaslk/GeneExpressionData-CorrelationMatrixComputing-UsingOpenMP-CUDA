@@ -2,13 +2,132 @@
 #include <stdlib.h>
 #include <math.h>
 #include <cuda_runtime.h>
+#include <device_launch_parameters.h>
 
-void print_matrix(const float* matrix, int total_rows, int total_cols, int rows_to_print, int cols_to_print, const char* title) {
+#define CUDA_CHECK(call)                                                                                  \
+    do                                                                                                    \
+    {                                                                                                     \
+        cudaError_t error = call;                                                                         \
+        if (error != cudaSuccess)                                                                         \
+        {                                                                                                 \
+            fprintf(stderr, "CUDA error at %s:%d - %s\n", __FILE__, __LINE__, cudaGetErrorString(error)); \
+            exit(EXIT_FAILURE);                                                                           \
+        }                                                                                                 \
+    } while (0)
+
+// CUDA kernel for computing Pearson correlation coefficient
+__global__ void cuda_correlation_kernel(float *input_matrix, float *output_matrix, int N, int M)
+{
+    int i = blockIdx.y * blockDim.y + threadIdx.y;
+    int j = blockIdx.x * blockDim.x + threadIdx.x;
+
+    // Only compute upper triangle (including diagonal)
+    if (i <= j && i < N && j < N)
+    {
+        float sum_X = 0.0f, sum_Y = 0.0f, sum_XY = 0.0f;
+        float sum_X2 = 0.0f, sum_Y2 = 0.0f;
+
+        // Get pointers to the rows
+        float *row_i = input_matrix + i * M;
+        float *row_j = input_matrix + j * M;
+
+        // Compute sums for correlation formula
+        for (int k = 0; k < M; k++)
+        {
+            float xi = row_i[k];
+            float xj = row_j[k];
+
+            sum_X += xi;
+            sum_Y += xj;
+            sum_XY += xi * xj;
+            sum_X2 += xi * xi;
+            sum_Y2 += xj * xj;
+        }
+
+        // Calculate Pearson correlation coefficient
+        float numerator = (float)M * sum_XY - sum_X * sum_Y;
+        float denominator = sqrtf(((float)M * sum_X2 - sum_X * sum_X) * ((float)M * sum_Y2 - sum_Y * sum_Y));
+
+        float correlation = (denominator == 0.0f) ? 1.0f : numerator / denominator;
+
+        // Store in both positions for symmetric matrix
+        output_matrix[i * N + j] = correlation;
+        output_matrix[j * N + i] = correlation;
+    }
+}
+
+// Optimized CUDA kernel using shared memory for better performance
+__global__ void cuda_correlation_kernel_optimized(float *input_matrix, float *output_matrix, int N, int M)
+{
+    extern __shared__ float shared_data[];
+
+    int i = blockIdx.y * blockDim.y + threadIdx.y;
+    int j = blockIdx.x * blockDim.x + threadIdx.x;
+
+    if (i <= j && i < N && j < N)
+    {
+        float sum_X = 0.0f, sum_Y = 0.0f, sum_XY = 0.0f;
+        float sum_X2 = 0.0f, sum_Y2 = 0.0f;
+
+        // Process data in chunks to utilize shared memory
+        int chunk_size = min(M, 1024);
+
+        for (int start = 0; start < M; start += chunk_size)
+        {
+            int end = min(start + chunk_size, M);
+            int actual_chunk = end - start;
+
+            // Load data into shared memory
+            for (int k = 0; k < actual_chunk; k++)
+            {
+                if (start + k < M)
+                {
+                    float xi = input_matrix[i * M + start + k];
+                    float xj = input_matrix[j * M + start + k];
+
+                    sum_X += xi;
+                    sum_Y += xj;
+                    sum_XY += xi * xj;
+                    sum_X2 += xi * xi;
+                    sum_Y2 += xj * xj;
+                }
+            }
+        }
+
+        // Calculate correlation
+        float numerator = (float)M * sum_XY - sum_X * sum_Y;
+        float denominator = sqrtf(((float)M * sum_X2 - sum_X * sum_X) * ((float)M * sum_Y2 - sum_Y * sum_Y));
+
+        float correlation = (denominator == 0.0f) ? 1.0f : numerator / denominator;
+
+        output_matrix[i * N + j] = correlation;
+        output_matrix[j * N + i] = correlation;
+    }
+}
+
+// Host function to generate random input matrix
+void generate_input_matrix(float *matrix, int n, int m)
+{
+    for (int i = 0; i < n * m; i++)
+    {
+        matrix[i] = (float)rand() / (float)RAND_MAX;
+    }
+}
+
+// Host function to print matrix
+void print_matrix(const float *matrix, int total_rows, int total_cols, int rows_to_print, int cols_to_print, const char *title)
+{
     printf("--- %s ---\n", title);
-    if (rows_to_print > total_rows) rows_to_print = total_rows;
-    if (cols_to_print > total_cols) cols_to_print = total_cols;
-    for (int i = 0; i < rows_to_print; i++) {
-        for (int j = 0; j < cols_to_print; j++) {
+
+    if (rows_to_print > total_rows)
+        rows_to_print = total_rows;
+    if (cols_to_print > total_cols)
+        cols_to_print = total_cols;
+
+    for (int i = 0; i < rows_to_print; i++)
+    {
+        for (int j = 0; j < cols_to_print; j++)
+        {
             printf("%8.4f ", matrix[i * total_cols + j]);
         }
         printf("\n");
@@ -16,79 +135,123 @@ void print_matrix(const float* matrix, int total_rows, int total_cols, int rows_
     printf("---------------------------------------\n\n");
 }
 
-__global__ void correlation_kernel(float* input_matrix, float* output_matrix, int N, int M) {
-    int i = blockIdx.y * blockDim.y + threadIdx.y;
-    int j = blockIdx.x * blockDim.x + threadIdx.x;
+// CUDA correlation computation function
+void cuda_correlation(float *h_input_matrix, float *h_output_matrix, int N, int M, bool use_optimized = true)
+{
+    float *d_input_matrix, *d_output_matrix;
 
-    if (i < N && j < N && j >= i) {
-        // USE DOUBLE PRECISION FOR ACCUMULATORS FOR NUMERICAL STABILITY
-        double sum_X = 0.0, sum_Y = 0.0, sum_XY = 0.0;
-        double sum_X2 = 0.0, sum_Y2 = 0.0;
+    // Calculate memory sizes
+    size_t input_size = N * M * sizeof(float);
+    size_t output_size = N * N * sizeof(float);
 
-        float* row_i = input_matrix + i * M;
-        float* row_j = input_matrix + j * M;
+    // Allocate GPU memory
+    CUDA_CHECK(cudaMalloc(&d_input_matrix, input_size));
+    CUDA_CHECK(cudaMalloc(&d_output_matrix, output_size));
 
-        for (int k = 0; k < M; k++) {
-            double val_i = (double)row_i[k];
-            double val_j = (double)row_j[k];
-            sum_X += val_i; sum_Y += val_j; sum_XY += val_i * val_j;
-            sum_X2 += val_i * val_i; sum_Y2 += val_j * val_j;
-        }
+    // Copy input data to GPU
+    CUDA_CHECK(cudaMemcpy(d_input_matrix, h_input_matrix, input_size, cudaMemcpyHostToDevice));
 
-        double numerator = (double)M * sum_XY - sum_X * sum_Y;
-        double denominator = sqrt(((double)M * sum_X2 - sum_X * sum_X) * ((double)M * sum_Y2 - sum_Y * sum_Y));
-        
-        output_matrix[i * N + j] = (denominator == 0.0) ? 1.0f : (float)(numerator / denominator);
+    // Configure kernel launch parameters
+    dim3 block_size(16, 16); // 256 threads per block
+    dim3 grid_size((N + block_size.x - 1) / block_size.x, (N + block_size.y - 1) / block_size.y);
+
+    // Launch kernel
+    if (use_optimized)
+    {
+        size_t shared_mem_size = 2 * block_size.x * block_size.y * sizeof(float);
+        cuda_correlation_kernel_optimized<<<grid_size, block_size, shared_mem_size>>>(d_input_matrix, d_output_matrix, N, M);
     }
+    else
+    {
+        cuda_correlation_kernel<<<grid_size, block_size>>>(d_input_matrix, d_output_matrix, N, M);
+    }
+
+    // Check for kernel launch errors
+    CUDA_CHECK(cudaGetLastError());
+    CUDA_CHECK(cudaDeviceSynchronize());
+
+    // Copy result back to host
+    CUDA_CHECK(cudaMemcpy(h_output_matrix, d_output_matrix, output_size, cudaMemcpyDeviceToHost));
+
+    // Free GPU memory
+    CUDA_CHECK(cudaFree(d_input_matrix));
+    CUDA_CHECK(cudaFree(d_output_matrix));
 }
 
-void fill_symmetric(float* matrix, int N) {
-    for (int i = 0; i < N; i++) { for (int j = 0; j < i; j++) { matrix[j * N + i] = matrix[i * N + j]; } }
-}
+int main(int argc, char **argv)
+{
+    if (argc != 3)
+    {
+        fprintf(stderr, "Usage: %s <N_variables> <M_samples>\n", argv[0]);
+        return 1;
+    }
 
-int main(int argc, char** argv) {
-    if (argc != 3) { fprintf(stderr, "Usage: %s <N_variables> <M_samples>\n", argv[0]); return 1; }
-    int N = atoi(argv[1]); int M = atoi(argv[2]);
+    int N = atoi(argv[1]);
+    int M = atoi(argv[2]);
 
     printf("Executing CUDA Version\n");
     printf("Matrix Size: N=%d, M=%d\n", N, M);
 
-    float* h_input = (float*)malloc(N * M * sizeof(float));
-    float* h_output = (float*)malloc(N * N * sizeof(float));
-    if (!h_input || !h_output) { fprintf(stderr, "Host memory allocation failed!\n"); return 1; }
+    // Check CUDA device properties
+    int device_count;
+    CUDA_CHECK(cudaGetDeviceCount(&device_count));
 
+    if (device_count == 0)
+    {
+        fprintf(stderr, "No CUDA devices found!\n");
+        return 1;
+    }
+
+    cudaDeviceProp prop;
+    CUDA_CHECK(cudaGetDeviceProperties(&prop, 0));
+    printf("Using GPU: %s\n", prop.name);
+    printf("Compute Capability: %d.%d\n", prop.major, prop.minor);
+    printf("Global Memory: %.2f GB\n", prop.totalGlobalMem / (1024.0 * 1024.0 * 1024.0));
+
+    // Allocate host memory
+    float *input_matrix = (float *)malloc(N * M * sizeof(float));
+    float *output_matrix = (float *)malloc(N * N * sizeof(float));
+
+    if (!input_matrix || !output_matrix)
+    {
+        fprintf(stderr, "Memory allocation failed!\n");
+        return 1;
+    }
+
+    // Generate input data
     srand(12345);
-    for (int i = 0; i < N * M; i++) h_input[i] = (float)rand() / RAND_MAX;
-    print_matrix(h_input, N, M, 8, 8, "Input Matrix (Snippet)");
+    generate_input_matrix(input_matrix, N, M);
 
-    float *d_input, *d_output;
-    cudaMalloc(&d_input, N * M * sizeof(float));
-    cudaMalloc(&d_output, N * N * sizeof(float));
-    cudaMemcpy(d_input, h_input, N * M * sizeof(float), cudaMemcpyHostToDevice);
+    print_matrix(input_matrix, N, M, 8, 8, "Input Matrix (Snippet)");
 
-    dim3 threadsPerBlock(16, 16);
-    dim3 numBlocks((N + 15) / 16, (N + 15) / 16);
-
+    // Create CUDA events for timing
     cudaEvent_t start, stop;
-    cudaEventCreate(&start);
-    cudaEventCreate(&stop);
+    CUDA_CHECK(cudaEventCreate(&start));
+    CUDA_CHECK(cudaEventCreate(&stop));
 
-    cudaEventRecord(start);
-    correlation_kernel<<<numBlocks, threadsPerBlock>>>(d_input, d_output, N, M);
-    cudaEventRecord(stop);
-    cudaEventSynchronize(stop);
-    
+    // Record start time
+    CUDA_CHECK(cudaEventRecord(start));
+
+    // Compute correlation matrix using CUDA
+    cuda_correlation(input_matrix, output_matrix, N, M);
+
+    // Record end time
+    CUDA_CHECK(cudaEventRecord(stop));
+    CUDA_CHECK(cudaEventSynchronize(stop));
+
+    // Calculate elapsed time
     float milliseconds = 0;
-    cudaEventElapsedTime(&milliseconds, start, stop);
+    CUDA_CHECK(cudaEventElapsedTime(&milliseconds, start, stop));
 
-    cudaMemcpy(h_output, d_output, N * N * sizeof(float), cudaMemcpyDeviceToHost);
-    fill_symmetric(h_output, N);
-    
+    print_matrix(output_matrix, N, N, 8, 8, "Output Correlation Matrix (Snippet)");
     printf("Execution Time: %f seconds\n", milliseconds / 1000.0f);
-    print_matrix(h_output, N, N, 8, 8, "Output Correlation Matrix (Snippet)");
 
-    free(h_input); free(h_output);
-    cudaFree(d_input); cudaFree(d_output);
-    cudaEventDestroy(start); cudaEventDestroy(stop);
+    // Cleanup
+    CUDA_CHECK(cudaEventDestroy(start));
+    CUDA_CHECK(cudaEventDestroy(stop));
+
+    free(input_matrix);
+    free(output_matrix);
+
     return 0;
 }
