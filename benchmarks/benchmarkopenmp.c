@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h> // For access()
+#include <unistd.h>
 
 #define TEMP_DIR "/tmp/corr_benchmark"
 
@@ -12,9 +12,9 @@ typedef struct
 {
     char implementation[20];
     int N, M;
-    int threads; // To store the number of OpenMP threads used
+    int threads;
     double execution_time;
-    char status[20]; // e.g., "SUCCESS", "FAILED"
+    char status[20];
 } BenchmarkResult;
 
 // --- Benchmark Configuration ---
@@ -52,7 +52,8 @@ int execute_program(const char *program, int N, int M, int threads)
 
     // Set the OMP_NUM_THREADS environment variable for this specific execution
     // This is the key to testing different thread counts.
-    if (threads > 0) {
+    if (threads > 0)
+    {
         snprintf(thread_str, sizeof(thread_str), "%d", threads);
         setenv("OMP_NUM_THREADS", thread_str, 1); // 1 = overwrite existing value
     }
@@ -108,12 +109,15 @@ void print_results_table(BenchmarkResult *results, int num_results)
 
         // Display threads as "N/A" for non-OpenMP versions for clarity
         char thread_str[10];
-        if (results[i].threads == 0) {
+        if (results[i].threads == 0)
+        {
             snprintf(thread_str, sizeof(thread_str), "N/A");
-        } else {
+        }
+        else
+        {
             snprintf(thread_str, sizeof(thread_str), "%d", results[i].threads);
         }
-        
+
         printf("║ %-16s │ %-15s │ %-7s │ %-17.6f │ %-7s ║\n",
                results[i].implementation,
                size_str,
@@ -132,14 +136,16 @@ void save_results_to_csv(BenchmarkResult *results, int num_results)
     snprintf(filename, sizeof(filename), "benchmarks/results/performance_results_%ld.csv", time(NULL));
 
     FILE *file = fopen(filename, "w");
-    if (!file) {
+    if (!file)
+    {
         printf("\nWarning: Could not save results to CSV file '%s'\n", filename);
         return;
     }
 
     fprintf(file, "Implementation,N,M,Threads,ExecutionTime_s,Status\n");
 
-    for (int i = 0; i < num_results; i++) {
+    for (int i = 0; i < num_results; i++)
+    {
         fprintf(file, "%s,%d,%d,%d,%.6f,%s\n",
                 results[i].implementation,
                 results[i].N, results[i].M,
@@ -158,20 +164,22 @@ int main(void)
 
     int num_test_sizes = sizeof(test_sizes) / sizeof(test_sizes[0]);
     int num_implementations = sizeof(implementations) / sizeof(implementations[0]);
-    int num_omp_threads = sizeof(omp_thread_counts) / sizeof(omp_thread_counts[0]);
+    int num_omp_threads = 2;
+    // int num_omp_threads = sizeof(omp_thread_counts) / sizeof(omp_thread_counts[0]);
 
     // Check if executables exist before starting
     printf("Checking for required executables...\n");
-    for (int i = 0; i < num_implementations; i++) {
-        if (access(implementations[i], X_OK) != 0) {
+    for (int i = 0; i < num_implementations; i++)
+    {
+        if (access(implementations[i], X_OK) != 0)
+        {
             fprintf(stderr, "Error: Executable '%s' not found or not executable. Please run 'make' in the project root.\n", implementations[i]);
             return 1;
         }
     }
     printf("All executables found.\n\n");
 
-    create_temp_dir();
-
+    create_temp_dir(
     // Allocate space for all possible results
     int max_results = num_test_sizes * (2 + 2 * num_omp_threads); // 2 for serial/cuda, 2*omp for openmp/hybrid
     BenchmarkResult *results = malloc(max_results * sizeof(BenchmarkResult));
@@ -183,30 +191,38 @@ int main(void)
 
         printf("--- Testing Matrix Size: %d x %d ---\n", N, M);
 
-        for (int j = 0; j < num_implementations; j++) {
+        for (int j = 0; j < num_implementations; j++)
+        {
             const char *impl = implementations[j];
-            
+
             // For openmp and hybrid, loop through all specified thread counts
-            if (strcmp(impl, "openmp") == 0 || strcmp(impl, "hybrid") == 0) {
+            if (strcmp(impl, "openmp") == 0 || strcmp(impl, "hybrid") == 0)
+            {
                 printf("  Benchmarking '%s' with multiple threads...\n", impl);
-                for (int t = 0; t < num_omp_threads; t++) {
+                for (int t = 0; t < num_omp_threads; t++)
+                {
                     int threads = omp_thread_counts[t];
                     BenchmarkResult *res = &results[result_index++];
-                    
+
                     strcpy(res->implementation, impl);
                     res->N = N;
                     res->M = M;
                     res->threads = threads;
 
-                    if (execute_program(impl, N, M, threads) == 0) {
+                    if (execute_program(impl, N, M, threads) == 0)
+                    {
                         res->execution_time = extract_execution_time(impl, N, M, threads);
                         strcpy(res->status, "SUCCESS");
-                    } else {
+                    }
+                    else
+                    {
                         res->execution_time = -1.0;
                         strcpy(res->status, "FAILED");
                     }
                 }
-            } else { // For serial and cuda, run only once
+            }
+            else
+            { // For serial and cuda, run only once
                 printf("  Benchmarking '%s'...\n", impl);
                 BenchmarkResult *res = &results[result_index++];
 
@@ -215,10 +231,13 @@ int main(void)
                 res->M = M;
                 res->threads = (strcmp(impl, "serial") == 0) ? 1 : 0; // 1 for serial, 0 (N/A) for CUDA
 
-                if (execute_program(impl, N, M, res->threads) == 0) {
+                if (execute_program(impl, N, M, res->threads) == 0)
+                {
                     res->execution_time = extract_execution_time(impl, N, M, res->threads);
                     strcpy(res->status, "SUCCESS");
-                } else {
+                }
+                else
+                {
                     res->execution_time = -1.0;
                     strcpy(res->status, "FAILED");
                 }

@@ -1,14 +1,15 @@
-# Compiler definitions
+
 CC = gcc
 NVCC = nvcc
 
-# GPU Architecture to target. Your MX230 is a Pascal GPU, which is sm_61.
-# THIS IS THE KEY FIX for your specific hardware.
+# GPU Architecture - MX230 is a Pascal GPU, which is sm_61.
+
 ARCH_FLAG = -arch=sm_61
 
 # Compiler flags
 CFLAGS = -O3
 OMPFLAGS = -fopenmp
+
 # Pass the -fopenmp flag to the host compiler used by nvcc
 CUDA_HOST_FLAGS = -Xcompiler "-fopenmp"
 # Link the math and OpenMP libraries

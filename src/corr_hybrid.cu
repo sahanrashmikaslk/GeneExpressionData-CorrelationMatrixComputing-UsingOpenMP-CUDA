@@ -86,16 +86,18 @@ void print_matrix(const float *matrix, int total_rows, int total_cols, int rows_
     printf("---------------------------------------\n\n");
 }
 
-// Simple and effective hybrid: CPU preprocessing + GPU computation
+
 void hybrid_correlation(float *h_input_matrix, float *h_output_matrix, int N, int M)
 {
     printf("Using simple hybrid approach: CPU data preparation + GPU computation\n");
     
-    // Use OpenMP to initialize output matrix in parallel
+    //OpenMP to initialize output matrix in parallel
     #pragma omp parallel for
     for (int i = 0; i < N * N; i++) {
         h_output_matrix[i] = 0.0f;
     }
+    
+
     
     // GPU handles the main computation
     float *d_input_matrix, *d_output_matrix;

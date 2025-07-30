@@ -102,8 +102,9 @@ void cuda_correlation(float *h_input_matrix, float *h_output_matrix, int N, int 
     // Copy input data to GPU
     CUDA_CHECK(cudaMemcpy(d_input_matrix, h_input_matrix, input_size, cudaMemcpyHostToDevice));
 
-    // Configure kernel launch parameters
-    dim3 block_size(16, 16); // 256 threads per block
+    // Configure kernel launch parameters  // 256 threads per blockb v
+
+    dim3 block_size(16, 16);     
     dim3 grid_size((N + block_size.x - 1) / block_size.x, (N + block_size.y - 1) / block_size.y);
 
     cuda_correlation_kernel<<<grid_size, block_size>>>(d_input_matrix, d_output_matrix, N, M);
@@ -177,11 +178,11 @@ int main(int argc, char **argv)
     // .Compute correlation matrix using CUDA
     cuda_correlation(input_matrix, output_matrix, N, M);
 
-    // Record end time
+
     CUDA_CHECK(cudaEventRecord(stop));
     CUDA_CHECK(cudaEventSynchronize(stop));
 
-    // Calculate elapsed time
+   
     float milliseconds = 0;
     CUDA_CHECK(cudaEventElapsedTime(&milliseconds, start, stop));
 
