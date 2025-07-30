@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <omp.h>
+#include "accuracy_utils.h"
 
 // to generate a matrix of random floats
 void generate_input_matrix(float *matrix, int n, int m)
@@ -104,6 +105,9 @@ int main(int argc, char **argv)
     print_matrix(output_matrix, N, N, 8, 8, "Output Correlation Matrix (Snippet)");
 
     printf("Execution Time: %f seconds\n", end_time - start_time);
+
+    // Verify accuracy against serial reference
+    verify_accuracy(output_matrix, N, "openmp");
 
     free(input_matrix);
     free(output_matrix);

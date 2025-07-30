@@ -15,9 +15,18 @@ CUDA_HOST_FLAGS = -Xcompiler "-fopenmp"
 LIBS = -lm -lgomp
 
 # Target executables
-TARGETS = serial openmp cuda hybrid
+BASIC_TARGETS = serial openmp verify_accuracy
+CUDA_TARGETS = cuda hybrid
+TARGETS = $(BASIC_TARGETS)
+
+# Check if CUDA is available
+NVCC_EXISTS := $(shell command -v nvcc 2> /dev/null)
+ifdef NVCC_EXISTS
+    TARGETS += $(CUDA_TARGETS)
+endif
 
 all: $(TARGETS)
+	@echo "Built targets: $(TARGETS)"
 
 serial: src/corr_serial.c
 	$(CC) $(CFLAGS) -o $@ $< -lm
@@ -33,5 +42,25 @@ cuda: src/corr_cuda.cu
 hybrid: src/corr_hybrid.cu
 	$(NVCC) $(CFLAGS) $(ARCH_FLAG) $(CUDA_HOST_FLAGS) -o $@ $< $(LIBS)
 
+# Accuracy verification tool
+verify_accuracy: verify_accuracy.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
 clean:
-	rm -f $(TARGETS)
+	rm -f $(BASIC_TARGETS) $(CUDA_TARGETS)
+
+# Separate targets for CPU-only builds
+cpu-only: $(BASIC_TARGETS)
+	@echo "✅ CPU-only build completed"
+
+# Help target
+# help:
+# 	@echo "Available targets:"
+# 	@echo "  all       - Build all available implementations"
+# 	@echo "  cpu-only  - Build only CPU implementations (serial, openmp)"
+# 	@echo "  serial    - Build serial implementation"
+# 	@echo "  openmp    - Build OpenMP implementation"
+# 	@echo "  cuda      - Build CUDA implementation (requires nvcc)"
+# 	@echo "  hybrid    - Build hybrid implementation (requires nvcc)"
+# 	@echo "  verify_accuracy - Build accuracy verification tool"
+# 	@echo "  clean     - Remove all executables"

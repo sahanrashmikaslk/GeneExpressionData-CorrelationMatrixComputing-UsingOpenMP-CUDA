@@ -1,0 +1,865 @@
+Implementation,N,M,Iteration,ExecutionTime(s),Status
+serial,100,500,1,[0;32m[INFO][0m Running: serial (N=100, M=500, iter=1)
+0.003526,SUCCESS
+serial,100,500,2,[0;32m[INFO][0m Running: serial (N=100, M=500, iter=2)
+0.004057,SUCCESS
+serial,100,500,3,[0;32m[INFO][0m Running: serial (N=100, M=500, iter=3)
+0.003352,SUCCESS
+serial,100,1000,1,[0;32m[INFO][0m Running: serial (N=100, M=1000, iter=1)
+0.006801,SUCCESS
+serial,100,1000,2,[0;32m[INFO][0m Running: serial (N=100, M=1000, iter=2)
+0.007629,SUCCESS
+serial,100,1000,3,[0;32m[INFO][0m Running: serial (N=100, M=1000, iter=3)
+0.007322,SUCCESS
+serial,100,1500,1,[0;32m[INFO][0m Running: serial (N=100, M=1500, iter=1)
+0.010476,SUCCESS
+serial,100,1500,2,[0;32m[INFO][0m Running: serial (N=100, M=1500, iter=2)
+0.011883,SUCCESS
+serial,100,1500,3,[0;32m[INFO][0m Running: serial (N=100, M=1500, iter=3)
+0.011841,SUCCESS
+serial,100,2000,1,[0;32m[INFO][0m Running: serial (N=100, M=2000, iter=1)
+0.013344,SUCCESS
+serial,100,2000,2,[0;32m[INFO][0m Running: serial (N=100, M=2000, iter=2)
+0.014713,SUCCESS
+serial,100,2000,3,[0;32m[INFO][0m Running: serial (N=100, M=2000, iter=3)
+0.015180,SUCCESS
+serial,100,2500,1,[0;32m[INFO][0m Running: serial (N=100, M=2500, iter=1)
+0.018141,SUCCESS
+serial,100,2500,2,[0;32m[INFO][0m Running: serial (N=100, M=2500, iter=2)
+0.017338,SUCCESS
+serial,100,2500,3,[0;32m[INFO][0m Running: serial (N=100, M=2500, iter=3)
+0.016929,SUCCESS
+serial,100,3000,1,[0;32m[INFO][0m Running: serial (N=100, M=3000, iter=1)
+0.024406,SUCCESS
+serial,100,3000,2,[0;32m[INFO][0m Running: serial (N=100, M=3000, iter=2)
+0.019635,SUCCESS
+serial,100,3000,3,[0;32m[INFO][0m Running: serial (N=100, M=3000, iter=3)
+0.023268,SUCCESS
+serial,200,500,1,[0;32m[INFO][0m Running: serial (N=200, M=500, iter=1)
+0.014716,SUCCESS
+serial,200,500,2,[0;32m[INFO][0m Running: serial (N=200, M=500, iter=2)
+0.014232,SUCCESS
+serial,200,500,3,[0;32m[INFO][0m Running: serial (N=200, M=500, iter=3)
+0.014345,SUCCESS
+serial,200,1000,1,[0;32m[INFO][0m Running: serial (N=200, M=1000, iter=1)
+0.027672,SUCCESS
+serial,200,1000,2,[0;32m[INFO][0m Running: serial (N=200, M=1000, iter=2)
+0.027041,SUCCESS
+serial,200,1000,3,[0;32m[INFO][0m Running: serial (N=200, M=1000, iter=3)
+0.028019,SUCCESS
+serial,200,1500,1,[0;32m[INFO][0m Running: serial (N=200, M=1500, iter=1)
+0.041679,SUCCESS
+serial,200,1500,2,[0;32m[INFO][0m Running: serial (N=200, M=1500, iter=2)
+0.041735,SUCCESS
+serial,200,1500,3,[0;32m[INFO][0m Running: serial (N=200, M=1500, iter=3)
+0.040053,SUCCESS
+serial,200,2000,1,[0;32m[INFO][0m Running: serial (N=200, M=2000, iter=1)
+0.059688,SUCCESS
+serial,200,2000,2,[0;32m[INFO][0m Running: serial (N=200, M=2000, iter=2)
+0.055536,SUCCESS
+serial,200,2000,3,[0;32m[INFO][0m Running: serial (N=200, M=2000, iter=3)
+0.053181,SUCCESS
+serial,200,2500,1,[0;32m[INFO][0m Running: serial (N=200, M=2500, iter=1)
+0.072262,SUCCESS
+serial,200,2500,2,[0;32m[INFO][0m Running: serial (N=200, M=2500, iter=2)
+0.068530,SUCCESS
+serial,200,2500,3,[0;32m[INFO][0m Running: serial (N=200, M=2500, iter=3)
+0.065587,SUCCESS
+serial,200,3000,1,[0;32m[INFO][0m Running: serial (N=200, M=3000, iter=1)
+0.076041,SUCCESS
+serial,200,3000,2,[0;32m[INFO][0m Running: serial (N=200, M=3000, iter=2)
+0.077067,SUCCESS
+serial,200,3000,3,[0;32m[INFO][0m Running: serial (N=200, M=3000, iter=3)
+0.081452,SUCCESS
+serial,500,500,1,[0;32m[INFO][0m Running: serial (N=500, M=500, iter=1)
+0.090041,SUCCESS
+serial,500,500,2,[0;32m[INFO][0m Running: serial (N=500, M=500, iter=2)
+0.110688,SUCCESS
+serial,500,500,3,[0;32m[INFO][0m Running: serial (N=500, M=500, iter=3)
+0.082494,SUCCESS
+serial,500,1000,1,[0;32m[INFO][0m Running: serial (N=500, M=1000, iter=1)
+0.184602,SUCCESS
+serial,500,1000,2,[0;32m[INFO][0m Running: serial (N=500, M=1000, iter=2)
+0.167435,SUCCESS
+serial,500,1000,3,[0;32m[INFO][0m Running: serial (N=500, M=1000, iter=3)
+0.169631,SUCCESS
+serial,500,1500,1,[0;32m[INFO][0m Running: serial (N=500, M=1500, iter=1)
+0.253164,SUCCESS
+serial,500,1500,2,[0;32m[INFO][0m Running: serial (N=500, M=1500, iter=2)
+0.291648,SUCCESS
+serial,500,1500,3,[0;32m[INFO][0m Running: serial (N=500, M=1500, iter=3)
+0.255834,SUCCESS
+serial,500,2000,1,[0;32m[INFO][0m Running: serial (N=500, M=2000, iter=1)
+0.343729,SUCCESS
+serial,500,2000,2,[0;32m[INFO][0m Running: serial (N=500, M=2000, iter=2)
+0.339998,SUCCESS
+serial,500,2000,3,[0;32m[INFO][0m Running: serial (N=500, M=2000, iter=3)
+0.335768,SUCCESS
+serial,500,2500,1,[0;32m[INFO][0m Running: serial (N=500, M=2500, iter=1)
+0.459503,SUCCESS
+serial,500,2500,2,[0;32m[INFO][0m Running: serial (N=500, M=2500, iter=2)
+0.392291,SUCCESS
+serial,500,2500,3,[0;32m[INFO][0m Running: serial (N=500, M=2500, iter=3)
+0.408631,SUCCESS
+serial,500,3000,1,[0;32m[INFO][0m Running: serial (N=500, M=3000, iter=1)
+0.518832,SUCCESS
+serial,500,3000,2,[0;32m[INFO][0m Running: serial (N=500, M=3000, iter=2)
+0.496556,SUCCESS
+serial,500,3000,3,[0;32m[INFO][0m Running: serial (N=500, M=3000, iter=3)
+0.491799,SUCCESS
+serial,1000,500,1,[0;32m[INFO][0m Running: serial (N=1000, M=500, iter=1)
+0.335470,SUCCESS
+serial,1000,500,2,[0;32m[INFO][0m Running: serial (N=1000, M=500, iter=2)
+0.319949,SUCCESS
+serial,1000,500,3,[0;32m[INFO][0m Running: serial (N=1000, M=500, iter=3)
+0.313565,SUCCESS
+serial,1000,1000,1,[0;32m[INFO][0m Running: serial (N=1000, M=1000, iter=1)
+0.699942,SUCCESS
+serial,1000,1000,2,[0;32m[INFO][0m Running: serial (N=1000, M=1000, iter=2)
+0.626901,SUCCESS
+serial,1000,1000,3,[0;32m[INFO][0m Running: serial (N=1000, M=1000, iter=3)
+0.620251,SUCCESS
+serial,1000,1500,1,[0;32m[INFO][0m Running: serial (N=1000, M=1500, iter=1)
+0.954487,SUCCESS
+serial,1000,1500,2,[0;32m[INFO][0m Running: serial (N=1000, M=1500, iter=2)
+0.977724,SUCCESS
+serial,1000,1500,3,[0;32m[INFO][0m Running: serial (N=1000, M=1500, iter=3)
+0.991051,SUCCESS
+serial,1000,2000,1,[0;32m[INFO][0m Running: serial (N=1000, M=2000, iter=1)
+1.306364,SUCCESS
+serial,1000,2000,2,[0;32m[INFO][0m Running: serial (N=1000, M=2000, iter=2)
+1.305472,SUCCESS
+serial,1000,2000,3,[0;32m[INFO][0m Running: serial (N=1000, M=2000, iter=3)
+1.266547,SUCCESS
+serial,1000,2500,1,[0;32m[INFO][0m Running: serial (N=1000, M=2500, iter=1)
+1.651397,SUCCESS
+serial,1000,2500,2,[0;32m[INFO][0m Running: serial (N=1000, M=2500, iter=2)
+1.714548,SUCCESS
+serial,1000,2500,3,[0;32m[INFO][0m Running: serial (N=1000, M=2500, iter=3)
+1.911304,SUCCESS
+serial,1000,3000,1,[0;32m[INFO][0m Running: serial (N=1000, M=3000, iter=1)
+2.068958,SUCCESS
+serial,1000,3000,2,[0;32m[INFO][0m Running: serial (N=1000, M=3000, iter=2)
+1.980605,SUCCESS
+serial,1000,3000,3,[0;32m[INFO][0m Running: serial (N=1000, M=3000, iter=3)
+2.046982,SUCCESS
+serial,1500,500,1,[0;32m[INFO][0m Running: serial (N=1500, M=500, iter=1)
+0.794666,SUCCESS
+serial,1500,500,2,[0;32m[INFO][0m Running: serial (N=1500, M=500, iter=2)
+0.968437,SUCCESS
+serial,1500,500,3,[0;32m[INFO][0m Running: serial (N=1500, M=500, iter=3)
+0.799581,SUCCESS
+serial,1500,1000,1,[0;32m[INFO][0m Running: serial (N=1500, M=1000, iter=1)
+1.548044,SUCCESS
+serial,1500,1000,2,[0;32m[INFO][0m Running: serial (N=1500, M=1000, iter=2)
+1.584038,SUCCESS
+serial,1500,1000,3,[0;32m[INFO][0m Running: serial (N=1500, M=1000, iter=3)
+1.538225,SUCCESS
+serial,1500,1500,1,[0;32m[INFO][0m Running: serial (N=1500, M=1500, iter=1)
+2.185745,SUCCESS
+serial,1500,1500,2,[0;32m[INFO][0m Running: serial (N=1500, M=1500, iter=2)
+2.372001,SUCCESS
+serial,1500,1500,3,[0;32m[INFO][0m Running: serial (N=1500, M=1500, iter=3)
+2.267038,SUCCESS
+serial,1500,2000,1,[0;32m[INFO][0m Running: serial (N=1500, M=2000, iter=1)
+2.942993,SUCCESS
+serial,1500,2000,2,[0;32m[INFO][0m Running: serial (N=1500, M=2000, iter=2)
+3.377835,SUCCESS
+serial,1500,2000,3,[0;32m[INFO][0m Running: serial (N=1500, M=2000, iter=3)
+3.170231,SUCCESS
+serial,1500,2500,1,[0;32m[INFO][0m Running: serial (N=1500, M=2500, iter=1)
+3.612778,SUCCESS
+serial,1500,2500,2,[0;32m[INFO][0m Running: serial (N=1500, M=2500, iter=2)
+3.614924,SUCCESS
+serial,1500,2500,3,[0;32m[INFO][0m Running: serial (N=1500, M=2500, iter=3)
+3.566183,SUCCESS
+serial,1500,3000,1,[0;32m[INFO][0m Running: serial (N=1500, M=3000, iter=1)
+4.289013,SUCCESS
+serial,1500,3000,2,[0;32m[INFO][0m Running: serial (N=1500, M=3000, iter=2)
+4.342150,SUCCESS
+serial,1500,3000,3,[0;32m[INFO][0m Running: serial (N=1500, M=3000, iter=3)
+4.314199,SUCCESS
+serial,2000,500,1,[0;32m[INFO][0m Running: serial (N=2000, M=500, iter=1)
+1.348764,SUCCESS
+serial,2000,500,2,[0;32m[INFO][0m Running: serial (N=2000, M=500, iter=2)
+1.210387,SUCCESS
+serial,2000,500,3,[0;32m[INFO][0m Running: serial (N=2000, M=500, iter=3)
+1.297903,SUCCESS
+serial,2000,1000,1,[0;32m[INFO][0m Running: serial (N=2000, M=1000, iter=1)
+3.002875,SUCCESS
+serial,2000,1000,2,[0;32m[INFO][0m Running: serial (N=2000, M=1000, iter=2)
+2.792306,SUCCESS
+serial,2000,1000,3,[0;32m[INFO][0m Running: serial (N=2000, M=1000, iter=3)
+2.772515,SUCCESS
+serial,2000,1500,1,[0;32m[INFO][0m Running: serial (N=2000, M=1500, iter=1)
+3.973776,SUCCESS
+serial,2000,1500,2,[0;32m[INFO][0m Running: serial (N=2000, M=1500, iter=2)
+4.250655,SUCCESS
+serial,2000,1500,3,[0;32m[INFO][0m Running: serial (N=2000, M=1500, iter=3)
+4.100256,SUCCESS
+serial,2000,2000,1,[0;32m[INFO][0m Running: serial (N=2000, M=2000, iter=1)
+5.361932,SUCCESS
+serial,2000,2000,2,[0;32m[INFO][0m Running: serial (N=2000, M=2000, iter=2)
+5.662689,SUCCESS
+serial,2000,2000,3,[0;32m[INFO][0m Running: serial (N=2000, M=2000, iter=3)
+5.610556,SUCCESS
+serial,2000,2500,1,[0;32m[INFO][0m Running: serial (N=2000, M=2500, iter=1)
+6.861707,SUCCESS
+serial,2000,2500,2,[0;32m[INFO][0m Running: serial (N=2000, M=2500, iter=2)
+6.576190,SUCCESS
+serial,2000,2500,3,[0;32m[INFO][0m Running: serial (N=2000, M=2500, iter=3)
+7.224040,SUCCESS
+serial,2000,3000,1,[0;32m[INFO][0m Running: serial (N=2000, M=3000, iter=1)
+8.272103,SUCCESS
+serial,2000,3000,2,[0;32m[INFO][0m Running: serial (N=2000, M=3000, iter=2)
+8.365017,SUCCESS
+serial,2000,3000,3,[0;32m[INFO][0m Running: serial (N=2000, M=3000, iter=3)
+7.937407,SUCCESS
+openmp,100,500,1,[0;32m[INFO][0m Running: openmp (N=100, M=500, iter=1)
+0.011523,SUCCESS
+openmp,100,500,2,[0;32m[INFO][0m Running: openmp (N=100, M=500, iter=2)
+0.007437,SUCCESS
+openmp,100,500,3,[0;32m[INFO][0m Running: openmp (N=100, M=500, iter=3)
+0.004882,SUCCESS
+openmp,100,1000,1,[0;32m[INFO][0m Running: openmp (N=100, M=1000, iter=1)
+0.013205,SUCCESS
+openmp,100,1000,2,[0;32m[INFO][0m Running: openmp (N=100, M=1000, iter=2)
+0.006437,SUCCESS
+openmp,100,1000,3,[0;32m[INFO][0m Running: openmp (N=100, M=1000, iter=3)
+0.001695,SUCCESS
+openmp,100,1500,1,[0;32m[INFO][0m Running: openmp (N=100, M=1500, iter=1)
+0.002364,SUCCESS
+openmp,100,1500,2,[0;32m[INFO][0m Running: openmp (N=100, M=1500, iter=2)
+0.013893,SUCCESS
+openmp,100,1500,3,[0;32m[INFO][0m Running: openmp (N=100, M=1500, iter=3)
+0.013896,SUCCESS
+openmp,100,2000,1,[0;32m[INFO][0m Running: openmp (N=100, M=2000, iter=1)
+0.007464,SUCCESS
+openmp,100,2000,2,[0;32m[INFO][0m Running: openmp (N=100, M=2000, iter=2)
+0.006965,SUCCESS
+openmp,100,2000,3,[0;32m[INFO][0m Running: openmp (N=100, M=2000, iter=3)
+0.006648,SUCCESS
+openmp,100,2500,1,[0;32m[INFO][0m Running: openmp (N=100, M=2500, iter=1)
+0.008247,SUCCESS
+openmp,100,2500,2,[0;32m[INFO][0m Running: openmp (N=100, M=2500, iter=2)
+0.006391,SUCCESS
+openmp,100,2500,3,[0;32m[INFO][0m Running: openmp (N=100, M=2500, iter=3)
+0.003543,SUCCESS
+openmp,100,3000,1,[0;32m[INFO][0m Running: openmp (N=100, M=3000, iter=1)
+0.004070,SUCCESS
+openmp,100,3000,2,[0;32m[INFO][0m Running: openmp (N=100, M=3000, iter=2)
+0.010007,SUCCESS
+openmp,100,3000,3,[0;32m[INFO][0m Running: openmp (N=100, M=3000, iter=3)
+0.009593,SUCCESS
+openmp,200,500,1,[0;32m[INFO][0m Running: openmp (N=200, M=500, iter=1)
+0.007112,SUCCESS
+openmp,200,500,2,[0;32m[INFO][0m Running: openmp (N=200, M=500, iter=2)
+0.007498,SUCCESS
+openmp,200,500,3,[0;32m[INFO][0m Running: openmp (N=200, M=500, iter=3)
+0.007847,SUCCESS
+openmp,200,1000,1,[0;32m[INFO][0m Running: openmp (N=200, M=1000, iter=1)
+0.014329,SUCCESS
+openmp,200,1000,2,[0;32m[INFO][0m Running: openmp (N=200, M=1000, iter=2)
+0.015280,SUCCESS
+openmp,200,1000,3,[0;32m[INFO][0m Running: openmp (N=200, M=1000, iter=3)
+0.014301,SUCCESS
+openmp,200,1500,1,[0;32m[INFO][0m Running: openmp (N=200, M=1500, iter=1)
+0.007891,SUCCESS
+openmp,200,1500,2,[0;32m[INFO][0m Running: openmp (N=200, M=1500, iter=2)
+0.015655,SUCCESS
+openmp,200,1500,3,[0;32m[INFO][0m Running: openmp (N=200, M=1500, iter=3)
+0.007946,SUCCESS
+openmp,200,2000,1,[0;32m[INFO][0m Running: openmp (N=200, M=2000, iter=1)
+0.011999,SUCCESS
+openmp,200,2000,2,[0;32m[INFO][0m Running: openmp (N=200, M=2000, iter=2)
+0.016228,SUCCESS
+openmp,200,2000,3,[0;32m[INFO][0m Running: openmp (N=200, M=2000, iter=3)
+0.015566,SUCCESS
+openmp,200,2500,1,[0;32m[INFO][0m Running: openmp (N=200, M=2500, iter=1)
+0.014321,SUCCESS
+openmp,200,2500,2,[0;32m[INFO][0m Running: openmp (N=200, M=2500, iter=2)
+0.021375,SUCCESS
+openmp,200,2500,3,[0;32m[INFO][0m Running: openmp (N=200, M=2500, iter=3)
+0.034069,SUCCESS
+openmp,200,3000,1,[0;32m[INFO][0m Running: openmp (N=200, M=3000, iter=1)
+0.025643,SUCCESS
+openmp,200,3000,2,[0;32m[INFO][0m Running: openmp (N=200, M=3000, iter=2)
+0.029234,SUCCESS
+openmp,200,3000,3,[0;32m[INFO][0m Running: openmp (N=200, M=3000, iter=3)
+0.040349,SUCCESS
+openmp,500,500,1,[0;32m[INFO][0m Running: openmp (N=500, M=500, iter=1)
+0.022057,SUCCESS
+openmp,500,500,2,[0;32m[INFO][0m Running: openmp (N=500, M=500, iter=2)
+0.039419,SUCCESS
+openmp,500,500,3,[0;32m[INFO][0m Running: openmp (N=500, M=500, iter=3)
+0.024292,SUCCESS
+openmp,500,1000,1,[0;32m[INFO][0m Running: openmp (N=500, M=1000, iter=1)
+0.044602,SUCCESS
+openmp,500,1000,2,[0;32m[INFO][0m Running: openmp (N=500, M=1000, iter=2)
+0.038535,SUCCESS
+openmp,500,1000,3,[0;32m[INFO][0m Running: openmp (N=500, M=1000, iter=3)
+0.046932,SUCCESS
+openmp,500,1500,1,[0;32m[INFO][0m Running: openmp (N=500, M=1500, iter=1)
+0.055420,SUCCESS
+openmp,500,1500,2,[0;32m[INFO][0m Running: openmp (N=500, M=1500, iter=2)
+0.063862,SUCCESS
+openmp,500,1500,3,[0;32m[INFO][0m Running: openmp (N=500, M=1500, iter=3)
+0.050030,SUCCESS
+openmp,500,2000,1,[0;32m[INFO][0m Running: openmp (N=500, M=2000, iter=1)
+0.091130,SUCCESS
+openmp,500,2000,2,[0;32m[INFO][0m Running: openmp (N=500, M=2000, iter=2)
+0.065616,SUCCESS
+openmp,500,2000,3,[0;32m[INFO][0m Running: openmp (N=500, M=2000, iter=3)
+0.065124,SUCCESS
+openmp,500,2500,1,[0;32m[INFO][0m Running: openmp (N=500, M=2500, iter=1)
+0.079927,SUCCESS
+openmp,500,2500,2,[0;32m[INFO][0m Running: openmp (N=500, M=2500, iter=2)
+0.082737,SUCCESS
+openmp,500,2500,3,[0;32m[INFO][0m Running: openmp (N=500, M=2500, iter=3)
+0.089094,SUCCESS
+openmp,500,3000,1,[0;32m[INFO][0m Running: openmp (N=500, M=3000, iter=1)
+0.099295,SUCCESS
+openmp,500,3000,2,[0;32m[INFO][0m Running: openmp (N=500, M=3000, iter=2)
+0.101511,SUCCESS
+openmp,500,3000,3,[0;32m[INFO][0m Running: openmp (N=500, M=3000, iter=3)
+0.154649,SUCCESS
+openmp,1000,500,1,[0;32m[INFO][0m Running: openmp (N=1000, M=500, iter=1)
+0.068617,SUCCESS
+openmp,1000,500,2,[0;32m[INFO][0m Running: openmp (N=1000, M=500, iter=2)
+0.113364,SUCCESS
+openmp,1000,500,3,[0;32m[INFO][0m Running: openmp (N=1000, M=500, iter=3)
+0.100046,SUCCESS
+openmp,1000,1000,1,[0;32m[INFO][0m Running: openmp (N=1000, M=1000, iter=1)
+0.220693,SUCCESS
+openmp,1000,1000,2,[0;32m[INFO][0m Running: openmp (N=1000, M=1000, iter=2)
+0.134714,SUCCESS
+openmp,1000,1000,3,[0;32m[INFO][0m Running: openmp (N=1000, M=1000, iter=3)
+0.173832,SUCCESS
+openmp,1000,1500,1,[0;32m[INFO][0m Running: openmp (N=1000, M=1500, iter=1)
+0.200555,SUCCESS
+openmp,1000,1500,2,[0;32m[INFO][0m Running: openmp (N=1000, M=1500, iter=2)
+0.198276,SUCCESS
+openmp,1000,1500,3,[0;32m[INFO][0m Running: openmp (N=1000, M=1500, iter=3)
+0.198399,SUCCESS
+openmp,1000,2000,1,[0;32m[INFO][0m Running: openmp (N=1000, M=2000, iter=1)
+0.300157,SUCCESS
+openmp,1000,2000,2,[0;32m[INFO][0m Running: openmp (N=1000, M=2000, iter=2)
+0.343291,SUCCESS
+openmp,1000,2000,3,[0;32m[INFO][0m Running: openmp (N=1000, M=2000, iter=3)
+0.273030,SUCCESS
+openmp,1000,2500,1,[0;32m[INFO][0m Running: openmp (N=1000, M=2500, iter=1)
+0.338239,SUCCESS
+openmp,1000,2500,2,[0;32m[INFO][0m Running: openmp (N=1000, M=2500, iter=2)
+0.343952,SUCCESS
+openmp,1000,2500,3,[0;32m[INFO][0m Running: openmp (N=1000, M=2500, iter=3)
+0.344366,SUCCESS
+openmp,1000,3000,1,[0;32m[INFO][0m Running: openmp (N=1000, M=3000, iter=1)
+0.450980,SUCCESS
+openmp,1000,3000,2,[0;32m[INFO][0m Running: openmp (N=1000, M=3000, iter=2)
+0.449485,SUCCESS
+openmp,1000,3000,3,[0;32m[INFO][0m Running: openmp (N=1000, M=3000, iter=3)
+0.415516,SUCCESS
+openmp,1500,500,1,[0;32m[INFO][0m Running: openmp (N=1500, M=500, iter=1)
+0.163945,SUCCESS
+openmp,1500,500,2,[0;32m[INFO][0m Running: openmp (N=1500, M=500, iter=2)
+0.157357,SUCCESS
+openmp,1500,500,3,[0;32m[INFO][0m Running: openmp (N=1500, M=500, iter=3)
+0.249165,SUCCESS
+openmp,1500,1000,1,[0;32m[INFO][0m Running: openmp (N=1500, M=1000, iter=1)
+0.305861,SUCCESS
+openmp,1500,1000,2,[0;32m[INFO][0m Running: openmp (N=1500, M=1000, iter=2)
+0.304385,SUCCESS
+openmp,1500,1000,3,[0;32m[INFO][0m Running: openmp (N=1500, M=1000, iter=3)
+0.420350,SUCCESS
+openmp,1500,1500,1,[0;32m[INFO][0m Running: openmp (N=1500, M=1500, iter=1)
+0.535296,SUCCESS
+openmp,1500,1500,2,[0;32m[INFO][0m Running: openmp (N=1500, M=1500, iter=2)
+0.464898,SUCCESS
+openmp,1500,1500,3,[0;32m[INFO][0m Running: openmp (N=1500, M=1500, iter=3)
+0.556059,SUCCESS
+openmp,1500,2000,1,[0;32m[INFO][0m Running: openmp (N=1500, M=2000, iter=1)
+0.789861,SUCCESS
+openmp,1500,2000,2,[0;32m[INFO][0m Running: openmp (N=1500, M=2000, iter=2)
+0.627292,SUCCESS
+openmp,1500,2000,3,[0;32m[INFO][0m Running: openmp (N=1500, M=2000, iter=3)
+0.626326,SUCCESS
+openmp,1500,2500,1,[0;32m[INFO][0m Running: openmp (N=1500, M=2500, iter=1)
+0.832757,SUCCESS
+openmp,1500,2500,2,[0;32m[INFO][0m Running: openmp (N=1500, M=2500, iter=2)
+0.912400,SUCCESS
+openmp,1500,2500,3,[0;32m[INFO][0m Running: openmp (N=1500, M=2500, iter=3)
+0.932233,SUCCESS
+openmp,1500,3000,1,[0;32m[INFO][0m Running: openmp (N=1500, M=3000, iter=1)
+1.180667,SUCCESS
+openmp,1500,3000,2,[0;32m[INFO][0m Running: openmp (N=1500, M=3000, iter=2)
+1.091696,SUCCESS
+openmp,1500,3000,3,[0;32m[INFO][0m Running: openmp (N=1500, M=3000, iter=3)
+1.106951,SUCCESS
+openmp,2000,500,1,[0;32m[INFO][0m Running: openmp (N=2000, M=500, iter=1)
+0.282911,SUCCESS
+openmp,2000,500,2,[0;32m[INFO][0m Running: openmp (N=2000, M=500, iter=2)
+0.286944,SUCCESS
+openmp,2000,500,3,[0;32m[INFO][0m Running: openmp (N=2000, M=500, iter=3)
+0.276474,SUCCESS
+openmp,2000,1000,1,[0;32m[INFO][0m Running: openmp (N=2000, M=1000, iter=1)
+0.640318,SUCCESS
+openmp,2000,1000,2,[0;32m[INFO][0m Running: openmp (N=2000, M=1000, iter=2)
+0.812756,SUCCESS
+openmp,2000,1000,3,[0;32m[INFO][0m Running: openmp (N=2000, M=1000, iter=3)
+0.987030,SUCCESS
+openmp,2000,1500,1,[0;32m[INFO][0m Running: openmp (N=2000, M=1500, iter=1)
+1.570424,SUCCESS
+openmp,2000,1500,2,[0;32m[INFO][0m Running: openmp (N=2000, M=1500, iter=2)
+1.456816,SUCCESS
+openmp,2000,1500,3,[0;32m[INFO][0m Running: openmp (N=2000, M=1500, iter=3)
+1.407699,SUCCESS
+openmp,2000,2000,1,[0;32m[INFO][0m Running: openmp (N=2000, M=2000, iter=1)
+1.374426,SUCCESS
+openmp,2000,2000,2,[0;32m[INFO][0m Running: openmp (N=2000, M=2000, iter=2)
+1.349248,SUCCESS
+openmp,2000,2000,3,[0;32m[INFO][0m Running: openmp (N=2000, M=2000, iter=3)
+1.347645,SUCCESS
+openmp,2000,2500,1,[0;32m[INFO][0m Running: openmp (N=2000, M=2500, iter=1)
+1.647843,SUCCESS
+openmp,2000,2500,2,[0;32m[INFO][0m Running: openmp (N=2000, M=2500, iter=2)
+1.564029,SUCCESS
+openmp,2000,2500,3,[0;32m[INFO][0m Running: openmp (N=2000, M=2500, iter=3)
+1.540454,SUCCESS
+openmp,2000,3000,1,[0;32m[INFO][0m Running: openmp (N=2000, M=3000, iter=1)
+1.983791,SUCCESS
+openmp,2000,3000,2,[0;32m[INFO][0m Running: openmp (N=2000, M=3000, iter=2)
+2.082743,SUCCESS
+openmp,2000,3000,3,[0;32m[INFO][0m Running: openmp (N=2000, M=3000, iter=3)
+1.968929,SUCCESS
+cuda,100,500,1,[0;32m[INFO][0m Running: cuda (N=100, M=500, iter=1)
+0.004658,SUCCESS
+cuda,100,500,2,[0;32m[INFO][0m Running: cuda (N=100, M=500, iter=2)
+0.003054,SUCCESS
+cuda,100,500,3,[0;32m[INFO][0m Running: cuda (N=100, M=500, iter=3)
+0.003306,SUCCESS
+cuda,100,1000,1,[0;32m[INFO][0m Running: cuda (N=100, M=1000, iter=1)
+0.004570,SUCCESS
+cuda,100,1000,2,[0;32m[INFO][0m Running: cuda (N=100, M=1000, iter=2)
+0.003802,SUCCESS
+cuda,100,1000,3,[0;32m[INFO][0m Running: cuda (N=100, M=1000, iter=3)
+0.003783,SUCCESS
+cuda,100,1500,1,[0;32m[INFO][0m Running: cuda (N=100, M=1500, iter=1)
+0.004333,SUCCESS
+cuda,100,1500,2,[0;32m[INFO][0m Running: cuda (N=100, M=1500, iter=2)
+0.004758,SUCCESS
+cuda,100,1500,3,[0;32m[INFO][0m Running: cuda (N=100, M=1500, iter=3)
+0.004428,SUCCESS
+cuda,100,2000,1,[0;32m[INFO][0m Running: cuda (N=100, M=2000, iter=1)
+0.005195,SUCCESS
+cuda,100,2000,2,[0;32m[INFO][0m Running: cuda (N=100, M=2000, iter=2)
+0.005545,SUCCESS
+cuda,100,2000,3,[0;32m[INFO][0m Running: cuda (N=100, M=2000, iter=3)
+0.005923,SUCCESS
+cuda,100,2500,1,[0;32m[INFO][0m Running: cuda (N=100, M=2500, iter=1)
+0.005841,SUCCESS
+cuda,100,2500,2,[0;32m[INFO][0m Running: cuda (N=100, M=2500, iter=2)
+0.005490,SUCCESS
+cuda,100,2500,3,[0;32m[INFO][0m Running: cuda (N=100, M=2500, iter=3)
+0.006979,SUCCESS
+cuda,100,3000,1,[0;32m[INFO][0m Running: cuda (N=100, M=3000, iter=1)
+0.006775,SUCCESS
+cuda,100,3000,2,[0;32m[INFO][0m Running: cuda (N=100, M=3000, iter=2)
+0.007217,SUCCESS
+cuda,100,3000,3,[0;32m[INFO][0m Running: cuda (N=100, M=3000, iter=3)
+0.007952,SUCCESS
+cuda,200,500,1,[0;32m[INFO][0m Running: cuda (N=200, M=500, iter=1)
+0.004795,SUCCESS
+cuda,200,500,2,[0;32m[INFO][0m Running: cuda (N=200, M=500, iter=2)
+0.006402,SUCCESS
+cuda,200,500,3,[0;32m[INFO][0m Running: cuda (N=200, M=500, iter=3)
+0.004856,SUCCESS
+cuda,200,1000,1,[0;32m[INFO][0m Running: cuda (N=200, M=1000, iter=1)
+0.007251,SUCCESS
+cuda,200,1000,2,[0;32m[INFO][0m Running: cuda (N=200, M=1000, iter=2)
+0.008316,SUCCESS
+cuda,200,1000,3,[0;32m[INFO][0m Running: cuda (N=200, M=1000, iter=3)
+0.007072,SUCCESS
+cuda,200,1500,1,[0;32m[INFO][0m Running: cuda (N=200, M=1500, iter=1)
+0.009817,SUCCESS
+cuda,200,1500,2,[0;32m[INFO][0m Running: cuda (N=200, M=1500, iter=2)
+0.009493,SUCCESS
+cuda,200,1500,3,[0;32m[INFO][0m Running: cuda (N=200, M=1500, iter=3)
+0.009277,SUCCESS
+cuda,200,2000,1,[0;32m[INFO][0m Running: cuda (N=200, M=2000, iter=1)
+0.011600,SUCCESS
+cuda,200,2000,2,[0;32m[INFO][0m Running: cuda (N=200, M=2000, iter=2)
+0.011497,SUCCESS
+cuda,200,2000,3,[0;32m[INFO][0m Running: cuda (N=200, M=2000, iter=3)
+0.011402,SUCCESS
+cuda,200,2500,1,[0;32m[INFO][0m Running: cuda (N=200, M=2500, iter=1)
+0.016028,SUCCESS
+cuda,200,2500,2,[0;32m[INFO][0m Running: cuda (N=200, M=2500, iter=2)
+0.014403,SUCCESS
+cuda,200,2500,3,[0;32m[INFO][0m Running: cuda (N=200, M=2500, iter=3)
+0.017028,SUCCESS
+cuda,200,3000,1,[0;32m[INFO][0m Running: cuda (N=200, M=3000, iter=1)
+0.018256,SUCCESS
+cuda,200,3000,2,[0;32m[INFO][0m Running: cuda (N=200, M=3000, iter=2)
+0.018402,SUCCESS
+cuda,200,3000,3,[0;32m[INFO][0m Running: cuda (N=200, M=3000, iter=3)
+0.020192,SUCCESS
+cuda,500,500,1,[0;32m[INFO][0m Running: cuda (N=500, M=500, iter=1)
+0.017479,SUCCESS
+cuda,500,500,2,[0;32m[INFO][0m Running: cuda (N=500, M=500, iter=2)
+0.017542,SUCCESS
+cuda,500,500,3,[0;32m[INFO][0m Running: cuda (N=500, M=500, iter=3)
+0.018404,SUCCESS
+cuda,500,1000,1,[0;32m[INFO][0m Running: cuda (N=500, M=1000, iter=1)
+0.032622,SUCCESS
+cuda,500,1000,2,[0;32m[INFO][0m Running: cuda (N=500, M=1000, iter=2)
+0.032486,SUCCESS
+cuda,500,1000,3,[0;32m[INFO][0m Running: cuda (N=500, M=1000, iter=3)
+0.032047,SUCCESS
+cuda,500,1500,1,[0;32m[INFO][0m Running: cuda (N=500, M=1500, iter=1)
+0.044719,SUCCESS
+cuda,500,1500,2,[0;32m[INFO][0m Running: cuda (N=500, M=1500, iter=2)
+0.044870,SUCCESS
+cuda,500,1500,3,[0;32m[INFO][0m Running: cuda (N=500, M=1500, iter=3)
+0.043851,SUCCESS
+cuda,500,2000,1,[0;32m[INFO][0m Running: cuda (N=500, M=2000, iter=1)
+0.057512,SUCCESS
+cuda,500,2000,2,[0;32m[INFO][0m Running: cuda (N=500, M=2000, iter=2)
+0.058290,SUCCESS
+cuda,500,2000,3,[0;32m[INFO][0m Running: cuda (N=500, M=2000, iter=3)
+0.056777,SUCCESS
+cuda,500,2500,1,[0;32m[INFO][0m Running: cuda (N=500, M=2500, iter=1)
+0.071238,SUCCESS
+cuda,500,2500,2,[0;32m[INFO][0m Running: cuda (N=500, M=2500, iter=2)
+0.072089,SUCCESS
+cuda,500,2500,3,[0;32m[INFO][0m Running: cuda (N=500, M=2500, iter=3)
+0.070494,SUCCESS
+cuda,500,3000,1,[0;32m[INFO][0m Running: cuda (N=500, M=3000, iter=1)
+0.082538,SUCCESS
+cuda,500,3000,2,[0;32m[INFO][0m Running: cuda (N=500, M=3000, iter=2)
+0.082778,SUCCESS
+cuda,500,3000,3,[0;32m[INFO][0m Running: cuda (N=500, M=3000, iter=3)
+0.083391,SUCCESS
+cuda,1000,500,1,[0;32m[INFO][0m Running: cuda (N=1000, M=500, iter=1)
+0.059794,SUCCESS
+cuda,1000,500,2,[0;32m[INFO][0m Running: cuda (N=1000, M=500, iter=2)
+0.059091,SUCCESS
+cuda,1000,500,3,[0;32m[INFO][0m Running: cuda (N=1000, M=500, iter=3)
+0.060522,SUCCESS
+cuda,1000,1000,1,[0;32m[INFO][0m Running: cuda (N=1000, M=1000, iter=1)
+0.109441,SUCCESS
+cuda,1000,1000,2,[0;32m[INFO][0m Running: cuda (N=1000, M=1000, iter=2)
+0.109342,SUCCESS
+cuda,1000,1000,3,[0;32m[INFO][0m Running: cuda (N=1000, M=1000, iter=3)
+0.109184,SUCCESS
+cuda,1000,1500,1,[0;32m[INFO][0m Running: cuda (N=1000, M=1500, iter=1)
+0.158349,SUCCESS
+cuda,1000,1500,2,[0;32m[INFO][0m Running: cuda (N=1000, M=1500, iter=2)
+0.155903,SUCCESS
+cuda,1000,1500,3,[0;32m[INFO][0m Running: cuda (N=1000, M=1500, iter=3)
+0.155585,SUCCESS
+cuda,1000,2000,1,[0;32m[INFO][0m Running: cuda (N=1000, M=2000, iter=1)
+0.210330,SUCCESS
+cuda,1000,2000,2,[0;32m[INFO][0m Running: cuda (N=1000, M=2000, iter=2)
+0.196241,SUCCESS
+cuda,1000,2000,3,[0;32m[INFO][0m Running: cuda (N=1000, M=2000, iter=3)
+0.200639,SUCCESS
+cuda,1000,2500,1,[0;32m[INFO][0m Running: cuda (N=1000, M=2500, iter=1)
+0.251188,SUCCESS
+cuda,1000,2500,2,[0;32m[INFO][0m Running: cuda (N=1000, M=2500, iter=2)
+0.259380,SUCCESS
+cuda,1000,2500,3,[0;32m[INFO][0m Running: cuda (N=1000, M=2500, iter=3)
+0.261153,SUCCESS
+cuda,1000,3000,1,[0;32m[INFO][0m Running: cuda (N=1000, M=3000, iter=1)
+0.302533,SUCCESS
+cuda,1000,3000,2,[0;32m[INFO][0m Running: cuda (N=1000, M=3000, iter=2)
+0.299407,SUCCESS
+cuda,1000,3000,3,[0;32m[INFO][0m Running: cuda (N=1000, M=3000, iter=3)
+0.305814,SUCCESS
+cuda,1500,500,1,[0;32m[INFO][0m Running: cuda (N=1500, M=500, iter=1)
+0.127292,SUCCESS
+cuda,1500,500,2,[0;32m[INFO][0m Running: cuda (N=1500, M=500, iter=2)
+0.128678,SUCCESS
+cuda,1500,500,3,[0;32m[INFO][0m Running: cuda (N=1500, M=500, iter=3)
+0.128500,SUCCESS
+cuda,1500,1000,1,[0;32m[INFO][0m Running: cuda (N=1500, M=1000, iter=1)
+0.227305,SUCCESS
+cuda,1500,1000,2,[0;32m[INFO][0m Running: cuda (N=1500, M=1000, iter=2)
+0.238602,SUCCESS
+cuda,1500,1000,3,[0;32m[INFO][0m Running: cuda (N=1500, M=1000, iter=3)
+0.227508,SUCCESS
+cuda,1500,1500,1,[0;32m[INFO][0m Running: cuda (N=1500, M=1500, iter=1)
+0.332613,SUCCESS
+cuda,1500,1500,2,[0;32m[INFO][0m Running: cuda (N=1500, M=1500, iter=2)
+0.343455,SUCCESS
+cuda,1500,1500,3,[0;32m[INFO][0m Running: cuda (N=1500, M=1500, iter=3)
+0.327543,SUCCESS
+cuda,1500,2000,1,[0;32m[INFO][0m Running: cuda (N=1500, M=2000, iter=1)
+0.426805,SUCCESS
+cuda,1500,2000,2,[0;32m[INFO][0m Running: cuda (N=1500, M=2000, iter=2)
+0.431980,SUCCESS
+cuda,1500,2000,3,[0;32m[INFO][0m Running: cuda (N=1500, M=2000, iter=3)
+0.430926,SUCCESS
+cuda,1500,2500,1,[0;32m[INFO][0m Running: cuda (N=1500, M=2500, iter=1)
+0.558673,SUCCESS
+cuda,1500,2500,2,[0;32m[INFO][0m Running: cuda (N=1500, M=2500, iter=2)
+0.541484,SUCCESS
+cuda,1500,2500,3,[0;32m[INFO][0m Running: cuda (N=1500, M=2500, iter=3)
+0.550607,SUCCESS
+cuda,1500,3000,1,[0;32m[INFO][0m Running: cuda (N=1500, M=3000, iter=1)
+0.625324,SUCCESS
+cuda,1500,3000,2,[0;32m[INFO][0m Running: cuda (N=1500, M=3000, iter=2)
+0.648213,SUCCESS
+cuda,1500,3000,3,[0;32m[INFO][0m Running: cuda (N=1500, M=3000, iter=3)
+0.647420,SUCCESS
+cuda,2000,500,1,[0;32m[INFO][0m Running: cuda (N=2000, M=500, iter=1)
+0.215800,SUCCESS
+cuda,2000,500,2,[0;32m[INFO][0m Running: cuda (N=2000, M=500, iter=2)
+0.218297,SUCCESS
+cuda,2000,500,3,[0;32m[INFO][0m Running: cuda (N=2000, M=500, iter=3)
+0.218153,SUCCESS
+cuda,2000,1000,1,[0;32m[INFO][0m Running: cuda (N=2000, M=1000, iter=1)
+0.404530,SUCCESS
+cuda,2000,1000,2,[0;32m[INFO][0m Running: cuda (N=2000, M=1000, iter=2)
+0.408125,SUCCESS
+cuda,2000,1000,3,[0;32m[INFO][0m Running: cuda (N=2000, M=1000, iter=3)
+0.406978,SUCCESS
+cuda,2000,1500,1,[0;32m[INFO][0m Running: cuda (N=2000, M=1500, iter=1)
+0.586630,SUCCESS
+cuda,2000,1500,2,[0;32m[INFO][0m Running: cuda (N=2000, M=1500, iter=2)
+0.573825,SUCCESS
+cuda,2000,1500,3,[0;32m[INFO][0m Running: cuda (N=2000, M=1500, iter=3)
+0.584642,SUCCESS
+cuda,2000,2000,1,[0;32m[INFO][0m Running: cuda (N=2000, M=2000, iter=1)
+0.750764,SUCCESS
+cuda,2000,2000,2,[0;32m[INFO][0m Running: cuda (N=2000, M=2000, iter=2)
+0.759031,SUCCESS
+cuda,2000,2000,3,[0;32m[INFO][0m Running: cuda (N=2000, M=2000, iter=3)
+0.744221,SUCCESS
+cuda,2000,2500,1,[0;32m[INFO][0m Running: cuda (N=2000, M=2500, iter=1)
+0.965577,SUCCESS
+cuda,2000,2500,2,[0;32m[INFO][0m Running: cuda (N=2000, M=2500, iter=2)
+0.966455,SUCCESS
+cuda,2000,2500,3,[0;32m[INFO][0m Running: cuda (N=2000, M=2500, iter=3)
+0.965327,SUCCESS
+cuda,2000,3000,1,[0;32m[INFO][0m Running: cuda (N=2000, M=3000, iter=1)
+1.124626,SUCCESS
+cuda,2000,3000,2,[0;32m[INFO][0m Running: cuda (N=2000, M=3000, iter=2)
+1.121805,SUCCESS
+cuda,2000,3000,3,[0;32m[INFO][0m Running: cuda (N=2000, M=3000, iter=3)
+1.124087,SUCCESS
+hybrid,100,500,1,[0;32m[INFO][0m Running: hybrid (N=100, M=500, iter=1)
+0.107833,SUCCESS
+hybrid,100,500,2,[0;32m[INFO][0m Running: hybrid (N=100, M=500, iter=2)
+0.099799,SUCCESS
+hybrid,100,500,3,[0;32m[INFO][0m Running: hybrid (N=100, M=500, iter=3)
+0.100181,SUCCESS
+hybrid,100,1000,1,[0;32m[INFO][0m Running: hybrid (N=100, M=1000, iter=1)
+0.091445,SUCCESS
+hybrid,100,1000,2,[0;32m[INFO][0m Running: hybrid (N=100, M=1000, iter=2)
+0.109232,SUCCESS
+hybrid,100,1000,3,[0;32m[INFO][0m Running: hybrid (N=100, M=1000, iter=3)
+0.104530,SUCCESS
+hybrid,100,1500,1,[0;32m[INFO][0m Running: hybrid (N=100, M=1500, iter=1)
+0.116175,SUCCESS
+hybrid,100,1500,2,[0;32m[INFO][0m Running: hybrid (N=100, M=1500, iter=2)
+0.108826,SUCCESS
+hybrid,100,1500,3,[0;32m[INFO][0m Running: hybrid (N=100, M=1500, iter=3)
+0.098214,SUCCESS
+hybrid,100,2000,1,[0;32m[INFO][0m Running: hybrid (N=100, M=2000, iter=1)
+0.107219,SUCCESS
+hybrid,100,2000,2,[0;32m[INFO][0m Running: hybrid (N=100, M=2000, iter=2)
+0.107784,SUCCESS
+hybrid,100,2000,3,[0;32m[INFO][0m Running: hybrid (N=100, M=2000, iter=3)
+0.110095,SUCCESS
+hybrid,100,2500,1,[0;32m[INFO][0m Running: hybrid (N=100, M=2500, iter=1)
+0.125049,SUCCESS
+hybrid,100,2500,2,[0;32m[INFO][0m Running: hybrid (N=100, M=2500, iter=2)
+0.108193,SUCCESS
+hybrid,100,2500,3,[0;32m[INFO][0m Running: hybrid (N=100, M=2500, iter=3)
+0.098157,SUCCESS
+hybrid,100,3000,1,[0;32m[INFO][0m Running: hybrid (N=100, M=3000, iter=1)
+0.123523,SUCCESS
+hybrid,100,3000,2,[0;32m[INFO][0m Running: hybrid (N=100, M=3000, iter=2)
+0.112495,SUCCESS
+hybrid,100,3000,3,[0;32m[INFO][0m Running: hybrid (N=100, M=3000, iter=3)
+0.106788,SUCCESS
+hybrid,200,500,1,[0;32m[INFO][0m Running: hybrid (N=200, M=500, iter=1)
+0.099822,SUCCESS
+hybrid,200,500,2,[0;32m[INFO][0m Running: hybrid (N=200, M=500, iter=2)
+0.100694,SUCCESS
+hybrid,200,500,3,[0;32m[INFO][0m Running: hybrid (N=200, M=500, iter=3)
+0.103387,SUCCESS
+hybrid,200,1000,1,[0;32m[INFO][0m Running: hybrid (N=200, M=1000, iter=1)
+0.107232,SUCCESS
+hybrid,200,1000,2,[0;32m[INFO][0m Running: hybrid (N=200, M=1000, iter=2)
+0.113558,SUCCESS
+hybrid,200,1000,3,[0;32m[INFO][0m Running: hybrid (N=200, M=1000, iter=3)
+0.121898,SUCCESS
+hybrid,200,1500,1,[0;32m[INFO][0m Running: hybrid (N=200, M=1500, iter=1)
+0.119186,SUCCESS
+hybrid,200,1500,2,[0;32m[INFO][0m Running: hybrid (N=200, M=1500, iter=2)
+0.113895,SUCCESS
+hybrid,200,1500,3,[0;32m[INFO][0m Running: hybrid (N=200, M=1500, iter=3)
+0.110841,SUCCESS
+hybrid,200,2000,1,[0;32m[INFO][0m Running: hybrid (N=200, M=2000, iter=1)
+0.111596,SUCCESS
+hybrid,200,2000,2,[0;32m[INFO][0m Running: hybrid (N=200, M=2000, iter=2)
+0.129148,SUCCESS
+hybrid,200,2000,3,[0;32m[INFO][0m Running: hybrid (N=200, M=2000, iter=3)
+0.104229,SUCCESS
+hybrid,200,2500,1,[0;32m[INFO][0m Running: hybrid (N=200, M=2500, iter=1)
+0.110041,SUCCESS
+hybrid,200,2500,2,[0;32m[INFO][0m Running: hybrid (N=200, M=2500, iter=2)
+0.139766,SUCCESS
+hybrid,200,2500,3,[0;32m[INFO][0m Running: hybrid (N=200, M=2500, iter=3)
+0.128788,SUCCESS
+hybrid,200,3000,1,[0;32m[INFO][0m Running: hybrid (N=200, M=3000, iter=1)
+0.118080,SUCCESS
+hybrid,200,3000,2,[0;32m[INFO][0m Running: hybrid (N=200, M=3000, iter=2)
+0.209826,SUCCESS
+hybrid,200,3000,3,[0;32m[INFO][0m Running: hybrid (N=200, M=3000, iter=3)
+0.108381,SUCCESS
+hybrid,500,500,1,[0;32m[INFO][0m Running: hybrid (N=500, M=500, iter=1)
+0.117794,SUCCESS
+hybrid,500,500,2,[0;32m[INFO][0m Running: hybrid (N=500, M=500, iter=2)
+0.134991,SUCCESS
+hybrid,500,500,3,[0;32m[INFO][0m Running: hybrid (N=500, M=500, iter=3)
+0.132316,SUCCESS
+hybrid,500,1000,1,[0;32m[INFO][0m Running: hybrid (N=500, M=1000, iter=1)
+0.136173,SUCCESS
+hybrid,500,1000,2,[0;32m[INFO][0m Running: hybrid (N=500, M=1000, iter=2)
+0.141606,SUCCESS
+hybrid,500,1000,3,[0;32m[INFO][0m Running: hybrid (N=500, M=1000, iter=3)
+0.129705,SUCCESS
+hybrid,500,1500,1,[0;32m[INFO][0m Running: hybrid (N=500, M=1500, iter=1)
+0.148389,SUCCESS
+hybrid,500,1500,2,[0;32m[INFO][0m Running: hybrid (N=500, M=1500, iter=2)
+0.146648,SUCCESS
+hybrid,500,1500,3,[0;32m[INFO][0m Running: hybrid (N=500, M=1500, iter=3)
+0.157282,SUCCESS
+hybrid,500,2000,1,[0;32m[INFO][0m Running: hybrid (N=500, M=2000, iter=1)
+0.171111,SUCCESS
+hybrid,500,2000,2,[0;32m[INFO][0m Running: hybrid (N=500, M=2000, iter=2)
+0.159680,SUCCESS
+hybrid,500,2000,3,[0;32m[INFO][0m Running: hybrid (N=500, M=2000, iter=3)
+0.168973,SUCCESS
+hybrid,500,2500,1,[0;32m[INFO][0m Running: hybrid (N=500, M=2500, iter=1)
+0.195325,SUCCESS
+hybrid,500,2500,2,[0;32m[INFO][0m Running: hybrid (N=500, M=2500, iter=2)
+0.184123,SUCCESS
+hybrid,500,2500,3,[0;32m[INFO][0m Running: hybrid (N=500, M=2500, iter=3)
+0.194748,SUCCESS
+hybrid,500,3000,1,[0;32m[INFO][0m Running: hybrid (N=500, M=3000, iter=1)
+0.196478,SUCCESS
+hybrid,500,3000,2,[0;32m[INFO][0m Running: hybrid (N=500, M=3000, iter=2)
+0.189362,SUCCESS
+hybrid,500,3000,3,[0;32m[INFO][0m Running: hybrid (N=500, M=3000, iter=3)
+0.212191,SUCCESS
+hybrid,1000,500,1,[0;32m[INFO][0m Running: hybrid (N=1000, M=500, iter=1)
+0.170095,SUCCESS
+hybrid,1000,500,2,[0;32m[INFO][0m Running: hybrid (N=1000, M=500, iter=2)
+0.158542,SUCCESS
+hybrid,1000,500,3,[0;32m[INFO][0m Running: hybrid (N=1000, M=500, iter=3)
+0.169496,SUCCESS
+hybrid,1000,1000,1,[0;32m[INFO][0m Running: hybrid (N=1000, M=1000, iter=1)
+0.211754,SUCCESS
+hybrid,1000,1000,2,[0;32m[INFO][0m Running: hybrid (N=1000, M=1000, iter=2)
+0.216242,SUCCESS
+hybrid,1000,1000,3,[0;32m[INFO][0m Running: hybrid (N=1000, M=1000, iter=3)
+0.215143,SUCCESS
+hybrid,1000,1500,1,[0;32m[INFO][0m Running: hybrid (N=1000, M=1500, iter=1)
+0.262556,SUCCESS
+hybrid,1000,1500,2,[0;32m[INFO][0m Running: hybrid (N=1000, M=1500, iter=2)
+0.265198,SUCCESS
+hybrid,1000,1500,3,[0;32m[INFO][0m Running: hybrid (N=1000, M=1500, iter=3)
+0.256921,SUCCESS
+hybrid,1000,2000,1,[0;32m[INFO][0m Running: hybrid (N=1000, M=2000, iter=1)
+0.293859,SUCCESS
+hybrid,1000,2000,2,[0;32m[INFO][0m Running: hybrid (N=1000, M=2000, iter=2)
+0.303242,SUCCESS
+hybrid,1000,2000,3,[0;32m[INFO][0m Running: hybrid (N=1000, M=2000, iter=3)
+0.321946,SUCCESS
+hybrid,1000,2500,1,[0;32m[INFO][0m Running: hybrid (N=1000, M=2500, iter=1)
+0.356303,SUCCESS
+hybrid,1000,2500,2,[0;32m[INFO][0m Running: hybrid (N=1000, M=2500, iter=2)
+0.386891,SUCCESS
+hybrid,1000,2500,3,[0;32m[INFO][0m Running: hybrid (N=1000, M=2500, iter=3)
+0.357442,SUCCESS
+hybrid,1000,3000,1,[0;32m[INFO][0m Running: hybrid (N=1000, M=3000, iter=1)
+0.409313,SUCCESS
+hybrid,1000,3000,2,[0;32m[INFO][0m Running: hybrid (N=1000, M=3000, iter=2)
+0.451837,SUCCESS
+hybrid,1000,3000,3,[0;32m[INFO][0m Running: hybrid (N=1000, M=3000, iter=3)
+0.390390,SUCCESS
+hybrid,1500,500,1,[0;32m[INFO][0m Running: hybrid (N=1500, M=500, iter=1)
+0.233142,SUCCESS
+hybrid,1500,500,2,[0;32m[INFO][0m Running: hybrid (N=1500, M=500, iter=2)
+0.231750,SUCCESS
+hybrid,1500,500,3,[0;32m[INFO][0m Running: hybrid (N=1500, M=500, iter=3)
+0.238258,SUCCESS
+hybrid,1500,1000,1,[0;32m[INFO][0m Running: hybrid (N=1500, M=1000, iter=1)
+0.332054,SUCCESS
+hybrid,1500,1000,2,[0;32m[INFO][0m Running: hybrid (N=1500, M=1000, iter=2)
+0.319695,SUCCESS
+hybrid,1500,1000,3,[0;32m[INFO][0m Running: hybrid (N=1500, M=1000, iter=3)
+0.329031,SUCCESS
+hybrid,1500,1500,1,[0;32m[INFO][0m Running: hybrid (N=1500, M=1500, iter=1)
+0.415871,SUCCESS
+hybrid,1500,1500,2,[0;32m[INFO][0m Running: hybrid (N=1500, M=1500, iter=2)
+0.416422,SUCCESS
+hybrid,1500,1500,3,[0;32m[INFO][0m Running: hybrid (N=1500, M=1500, iter=3)
+0.423897,SUCCESS
+hybrid,1500,2000,1,[0;32m[INFO][0m Running: hybrid (N=1500, M=2000, iter=1)
+0.562430,SUCCESS
+hybrid,1500,2000,2,[0;32m[INFO][0m Running: hybrid (N=1500, M=2000, iter=2)
+0.530408,SUCCESS
+hybrid,1500,2000,3,[0;32m[INFO][0m Running: hybrid (N=1500, M=2000, iter=3)
+0.556692,SUCCESS
+hybrid,1500,2500,1,[0;32m[INFO][0m Running: hybrid (N=1500, M=2500, iter=1)
+0.635457,SUCCESS
+hybrid,1500,2500,2,[0;32m[INFO][0m Running: hybrid (N=1500, M=2500, iter=2)
+0.632090,SUCCESS
+hybrid,1500,2500,3,[0;32m[INFO][0m Running: hybrid (N=1500, M=2500, iter=3)
+0.634096,SUCCESS
+hybrid,1500,3000,1,[0;32m[INFO][0m Running: hybrid (N=1500, M=3000, iter=1)
+0.757981,SUCCESS
+hybrid,1500,3000,2,[0;32m[INFO][0m Running: hybrid (N=1500, M=3000, iter=2)
+0.741963,SUCCESS
+hybrid,1500,3000,3,[0;32m[INFO][0m Running: hybrid (N=1500, M=3000, iter=3)
+0.739496,SUCCESS
+hybrid,2000,500,1,[0;32m[INFO][0m Running: hybrid (N=2000, M=500, iter=1)
+0.302116,SUCCESS
+hybrid,2000,500,2,[0;32m[INFO][0m Running: hybrid (N=2000, M=500, iter=2)
+0.314029,SUCCESS
+hybrid,2000,500,3,[0;32m[INFO][0m Running: hybrid (N=2000, M=500, iter=3)
+0.314932,SUCCESS
+hybrid,2000,1000,1,[0;32m[INFO][0m Running: hybrid (N=2000, M=1000, iter=1)
+0.475191,SUCCESS
+hybrid,2000,1000,2,[0;32m[INFO][0m Running: hybrid (N=2000, M=1000, iter=2)
+0.489444,SUCCESS
+hybrid,2000,1000,3,[0;32m[INFO][0m Running: hybrid (N=2000, M=1000, iter=3)
+0.476475,SUCCESS
+hybrid,2000,1500,1,[0;32m[INFO][0m Running: hybrid (N=2000, M=1500, iter=1)
+0.689098,SUCCESS
+hybrid,2000,1500,2,[0;32m[INFO][0m Running: hybrid (N=2000, M=1500, iter=2)
+0.685813,SUCCESS
+hybrid,2000,1500,3,[0;32m[INFO][0m Running: hybrid (N=2000, M=1500, iter=3)
+0.683902,SUCCESS
+hybrid,2000,2000,1,[0;32m[INFO][0m Running: hybrid (N=2000, M=2000, iter=1)
+0.837936,SUCCESS
+hybrid,2000,2000,2,[0;32m[INFO][0m Running: hybrid (N=2000, M=2000, iter=2)
+0.853380,SUCCESS
+hybrid,2000,2000,3,[0;32m[INFO][0m Running: hybrid (N=2000, M=2000, iter=3)
+0.864148,SUCCESS
+hybrid,2000,2500,1,[0;32m[INFO][0m Running: hybrid (N=2000, M=2500, iter=1)
+1.548601,SUCCESS
+hybrid,2000,2500,2,[0;32m[INFO][0m Running: hybrid (N=2000, M=2500, iter=2)
+1.550485,SUCCESS
+hybrid,2000,2500,3,[0;32m[INFO][0m Running: hybrid (N=2000, M=2500, iter=3)
+1.071166,SUCCESS
+hybrid,2000,3000,1,[0;32m[INFO][0m Running: hybrid (N=2000, M=3000, iter=1)
+1.734274,SUCCESS
+hybrid,2000,3000,2,[0;32m[INFO][0m Running: hybrid (N=2000, M=3000, iter=2)
+1.741102,SUCCESS
+hybrid,2000,3000,3,[0;32m[INFO][0m Running: hybrid (N=2000, M=3000, iter=3)
+1.755075,SUCCESS

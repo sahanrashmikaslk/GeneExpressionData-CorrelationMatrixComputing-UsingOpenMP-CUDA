@@ -56,55 +56,6 @@ __global__ void cuda_correlation_kernel(float *input_matrix, float *output_matri
     }
 }
 
-// Optimized CUDA kernel using shared memory for better performance
-__global__ void cuda_correlation_kernel_optimized(float *input_matrix, float *output_matrix, int N, int M)
-{
-    extern __shared__ float shared_data[];
-
-    int i = blockIdx.y * blockDim.y + threadIdx.y;
-    int j = blockIdx.x * blockDim.x + threadIdx.x;
-
-    if (i <= j && i < N && j < N)
-    {
-        float sum_X = 0.0f, sum_Y = 0.0f, sum_XY = 0.0f;
-        float sum_X2 = 0.0f, sum_Y2 = 0.0f;
-
-        // Process data in chunks to utilize shared memory
-        int chunk_size = min(M, 1024);
-
-        for (int start = 0; start < M; start += chunk_size)
-        {
-            int end = min(start + chunk_size, M);
-            int actual_chunk = end - start;
-
-            // Load data into shared memory
-            for (int k = 0; k < actual_chunk; k++)
-            {
-                if (start + k < M)
-                {
-                    float xi = input_matrix[i * M + start + k];
-                    float xj = input_matrix[j * M + start + k];
-
-                    sum_X += xi;
-                    sum_Y += xj;
-                    sum_XY += xi * xj;
-                    sum_X2 += xi * xi;
-                    sum_Y2 += xj * xj;
-                }
-            }
-        }
-
-        // Calculate correlation
-        float numerator = (float)M * sum_XY - sum_X * sum_Y;
-        float denominator = sqrtf(((float)M * sum_X2 - sum_X * sum_X) * ((float)M * sum_Y2 - sum_Y * sum_Y));
-
-        float correlation = (denominator == 0.0f) ? 1.0f : numerator / denominator;
-
-        output_matrix[i * N + j] = correlation;
-        output_matrix[j * N + i] = correlation;
-    }
-}
-
 // Host function to generate random input matrix
 void generate_input_matrix(float *matrix, int n, int m)
 {
@@ -136,7 +87,7 @@ void print_matrix(const float *matrix, int total_rows, int total_cols, int rows_
 }
 
 // CUDA correlation computation function
-void cuda_correlation(float *h_input_matrix, float *h_output_matrix, int N, int M, bool use_optimized = true)
+void cuda_correlation(float *h_input_matrix, float *h_output_matrix, int N, int M)
 {
     float *d_input_matrix, *d_output_matrix;
 
@@ -155,16 +106,7 @@ void cuda_correlation(float *h_input_matrix, float *h_output_matrix, int N, int 
     dim3 block_size(16, 16); // 256 threads per block
     dim3 grid_size((N + block_size.x - 1) / block_size.x, (N + block_size.y - 1) / block_size.y);
 
-    // Launch kernel
-    if (use_optimized)
-    {
-        size_t shared_mem_size = 2 * block_size.x * block_size.y * sizeof(float);
-        cuda_correlation_kernel_optimized<<<grid_size, block_size, shared_mem_size>>>(d_input_matrix, d_output_matrix, N, M);
-    }
-    else
-    {
-        cuda_correlation_kernel<<<grid_size, block_size>>>(d_input_matrix, d_output_matrix, N, M);
-    }
+    cuda_correlation_kernel<<<grid_size, block_size>>>(d_input_matrix, d_output_matrix, N, M);
 
     // Check for kernel launch errors
     CUDA_CHECK(cudaGetLastError());
@@ -232,7 +174,7 @@ int main(int argc, char **argv)
     // Record start time
     CUDA_CHECK(cudaEventRecord(start));
 
-    // Compute correlation matrix using CUDA
+    // .Compute correlation matrix using CUDA
     cuda_correlation(input_matrix, output_matrix, N, M);
 
     // Record end time

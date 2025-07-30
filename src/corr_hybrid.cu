@@ -16,52 +16,6 @@
         }                                                                                                 \
     } while (0)
 
-// Optimized CUDA kernel with shared memory for hybrid approach
-__global__ void hybrid_correlation_kernel_optimized(float *input_matrix, float *output_matrix, int N, int M, int tile_start_row, int tile_end_row)
-{
-    extern __shared__ float shared_data[];
-    
-    int i = blockIdx.y * blockDim.y + threadIdx.y + tile_start_row;
-    int j = blockIdx.x * blockDim.x + threadIdx.x;
-
-    // Only compute upper triangle within the tile range
-    if (i <= j && i < tile_end_row && i >= tile_start_row && j < N)
-    {
-        float sum_X = 0.0f, sum_Y = 0.0f, sum_XY = 0.0f;
-        float sum_X2 = 0.0f, sum_Y2 = 0.0f;
-
-        // Process data in chunks for better cache utilization
-        int chunk_size = min(M, 1024);
-        
-        for (int start = 0; start < M; start += chunk_size)
-        {
-            int end = min(start + chunk_size, M);
-            
-            for (int k = start; k < end; k++)
-            {
-                float xi = input_matrix[i * M + k];
-                float xj = input_matrix[j * M + k];
-
-                sum_X += xi;
-                sum_Y += xj;
-                sum_XY += xi * xj;
-                sum_X2 += xi * xi;
-                sum_Y2 += xj * xj;
-            }
-        }
-
-        // Calculate Pearson correlation coefficient
-        float numerator = (float)M * sum_XY - sum_X * sum_Y;
-        float denominator = sqrtf(((float)M * sum_X2 - sum_X * sum_X) * ((float)M * sum_Y2 - sum_Y * sum_Y));
-
-        float correlation = (denominator == 0.0f) ? 1.0f : numerator / denominator;
-
-        // Store correlation value
-        output_matrix[i * N + j] = correlation;
-        output_matrix[j * N + i] = correlation;
-    }
-}
-
 // Standard CUDA kernel for smaller tiles
 __global__ void hybrid_correlation_kernel(float *input_matrix, float *output_matrix, int N, int M, int start_row, int end_row)
 {
@@ -133,7 +87,7 @@ void print_matrix(const float *matrix, int total_rows, int total_cols, int rows_
 }
 
 // Simple and effective hybrid: CPU preprocessing + GPU computation
-void hybrid_correlation_simple(float *h_input_matrix, float *h_output_matrix, int N, int M)
+void hybrid_correlation(float *h_input_matrix, float *h_output_matrix, int N, int M)
 {
     printf("Using simple hybrid approach: CPU data preparation + GPU computation\n");
     
@@ -170,68 +124,6 @@ void hybrid_correlation_simple(float *h_input_matrix, float *h_output_matrix, in
     CUDA_CHECK(cudaMemcpy(h_output_matrix, d_output_matrix, output_size, cudaMemcpyDeviceToHost));
     
     // Cleanup
-    CUDA_CHECK(cudaFree(d_input_matrix));
-    CUDA_CHECK(cudaFree(d_output_matrix));
-}
-
-// Stream-based hybrid approach for larger datasets
-void hybrid_correlation_streams(float *h_input_matrix, float *h_output_matrix, int N, int M)
-{
-    printf("Using stream-based hybrid approach for large dataset\n");
-    
-    const int num_streams = 2; // Reduce streams for better performance
-    cudaStream_t streams[num_streams];
-    
-    // Create streams
-    for (int i = 0; i < num_streams; i++) {
-        CUDA_CHECK(cudaStreamCreate(&streams[i]));
-    }
-    
-    float *d_input_matrix, *d_output_matrix;
-    size_t input_size = N * M * sizeof(float);
-    size_t output_size = N * N * sizeof(float);
-    
-    CUDA_CHECK(cudaMalloc(&d_input_matrix, input_size));
-    CUDA_CHECK(cudaMalloc(&d_output_matrix, output_size));
-    
-    // Copy input data to GPU
-    CUDA_CHECK(cudaMemcpy(d_input_matrix, h_input_matrix, input_size, cudaMemcpyHostToDevice));
-    CUDA_CHECK(cudaMemset(d_output_matrix, 0, output_size));
-    
-    // Divide work among streams
-    int rows_per_stream = N / num_streams;
-    
-    for (int stream_id = 0; stream_id < num_streams; stream_id++)
-    {
-        int start_row = stream_id * rows_per_stream;
-        int end_row = (stream_id == num_streams - 1) ? N : start_row + rows_per_stream;
-        
-        if (start_row < N && end_row > start_row)
-        {
-            int local_rows = end_row - start_row;
-            
-            dim3 block_size(16, 16);
-            dim3 grid_size((N + block_size.x - 1) / block_size.x,
-                          (local_rows + block_size.y - 1) / block_size.y);
-            
-            // Launch kernel in specific stream
-            hybrid_correlation_kernel<<<grid_size, block_size, 0, streams[stream_id]>>>(
-                d_input_matrix, d_output_matrix, N, M, start_row, end_row);
-        }
-    }
-    
-    // Synchronize all streams
-    for (int i = 0; i < num_streams; i++) {
-        CUDA_CHECK(cudaStreamSynchronize(streams[i]));
-    }
-    
-    // Copy result back
-    CUDA_CHECK(cudaMemcpy(h_output_matrix, d_output_matrix, output_size, cudaMemcpyDeviceToHost));
-    
-    // Cleanup
-    for (int i = 0; i < num_streams; i++) {
-        CUDA_CHECK(cudaStreamDestroy(streams[i]));
-    }
     CUDA_CHECK(cudaFree(d_input_matrix));
     CUDA_CHECK(cudaFree(d_output_matrix));
 }
@@ -288,12 +180,7 @@ int main(int argc, char **argv)
     // Time the hybrid computation
     double start_time = omp_get_wtime();
 
-    // Choose optimal hybrid strategy based on problem size
-    if (N >= 2000) {
-        hybrid_correlation_streams(input_matrix, output_matrix, N, M);
-    } else {
-        hybrid_correlation_simple(input_matrix, output_matrix, N, M);
-    }
+    hybrid_correlation(input_matrix, output_matrix, N, M);    
 
     double end_time = omp_get_wtime();
 

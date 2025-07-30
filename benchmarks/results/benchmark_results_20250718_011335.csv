@@ -1,0 +1,39 @@
+Implementation,N,M,Threads,Iteration,ExecutionTime(s),Status
+serial,100,500,1,1,[0;32m[INFO][0m Running: serial (N=100, M=500, Threads=1, iter=1)
+0.003294,SUCCESS
+serial,100,500,1,2,[0;32m[INFO][0m Running: serial (N=100, M=500, Threads=1, iter=2)
+0.003982,SUCCESS
+serial,100,500,1,3,[0;32m[INFO][0m Running: serial (N=100, M=500, Threads=1, iter=3)
+0.002965,SUCCESS
+serial,100,1000,1,1,[0;32m[INFO][0m Running: serial (N=100, M=1000, Threads=1, iter=1)
+0.006016,SUCCESS
+serial,100,1000,1,2,[0;32m[INFO][0m Running: serial (N=100, M=1000, Threads=1, iter=2)
+0.006013,SUCCESS
+serial,100,1000,1,3,[0;32m[INFO][0m Running: serial (N=100, M=1000, Threads=1, iter=3)
+0.006243,SUCCESS
+serial,100,1500,1,1,[0;32m[INFO][0m Running: serial (N=100, M=1500, Threads=1, iter=1)
+0.009779,SUCCESS
+serial,100,1500,1,2,[0;32m[INFO][0m Running: serial (N=100, M=1500, Threads=1, iter=2)
+0.010442,SUCCESS
+serial,100,1500,1,3,[0;32m[INFO][0m Running: serial (N=100, M=1500, Threads=1, iter=3)
+0.009905,SUCCESS
+serial,100,2000,1,1,[0;32m[INFO][0m Running: serial (N=100, M=2000, Threads=1, iter=1)
+0.013177,SUCCESS
+serial,100,2000,1,2,[0;32m[INFO][0m Running: serial (N=100, M=2000, Threads=1, iter=2)
+0.013072,SUCCESS
+serial,100,2000,1,3,[0;32m[INFO][0m Running: serial (N=100, M=2000, Threads=1, iter=3)
+0.013602,SUCCESS
+serial,100,2500,1,1,[0;32m[INFO][0m Running: serial (N=100, M=2500, Threads=1, iter=1)
+0.015978,SUCCESS
+serial,100,2500,1,2,[0;32m[INFO][0m Running: serial (N=100, M=2500, Threads=1, iter=2)
+0.017160,SUCCESS
+serial,100,2500,1,3,[0;32m[INFO][0m Running: serial (N=100, M=2500, Threads=1, iter=3)
+0.016644,SUCCESS
+serial,100,3000,1,1,[0;32m[INFO][0m Running: serial (N=100, M=3000, Threads=1, iter=1)
+0.020586,SUCCESS
+serial,100,3000,1,2,[0;32m[INFO][0m Running: serial (N=100, M=3000, Threads=1, iter=2)
+0.020608,SUCCESS
+serial,100,3000,1,3,[0;32m[INFO][0m Running: serial (N=100, M=3000, Threads=1, iter=3)
+0.018844,SUCCESS
+serial,200,500,1,1,[0;32m[INFO][0m Running: serial (N=200, M=500, Threads=1, iter=1)
+0.016458,SUCCESS
